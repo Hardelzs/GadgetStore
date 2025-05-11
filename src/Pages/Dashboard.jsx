@@ -43,7 +43,7 @@ export default function Dashboard() {
             Register your gadgets for the current semester to stay compliant.
           </p>
           <button
-            // onClick={exportToCSV}
+            onClick={exportToCSV}
             className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
           >
             Export Devices to CSV
