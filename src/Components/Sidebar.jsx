@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 export default function Sidebar() {
   return (
 
-    <aside className="w-64 h-screen bg-blue-800 text-white fixed top-0 left-0 p-4">
-      <h2 className="text-2xl font-bold mb-10 text-center">GadgetReg</h2>
-      <nav className="flex flex-col gap-4">
+    <aside className="absolute w-48 rounded-2xl h-[977px] bg-blue-800 text-white ml-2 top-2 left-0 p-4">
+      <h2 className="text-1xl font-bold mb-10 text-center">GadgetReg</h2>
+
+      <nav className="flex flex-col text gap-4">
         <Link to="/dashboard" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <FaUser /> Dashboard
         </Link>
