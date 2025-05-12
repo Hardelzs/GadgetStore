@@ -74,13 +74,16 @@ export default function Mydevice() {
                     <strong>Brand:</strong> {device.brand}
                   </div>
                   <div className="mb-2">
-                    <strong>Serial:</strong> {device.serial}
+                    <strong>Serial:</strong> {device.serial || "N/A"}
                   </div>
                   <div className="mb-4 text-sm text-gray-600">
                     <strong>MAC:</strong> {device.mac || "N/A"}
                   </div>
                   <div className="mb-4 text-sm text-gray-600">
-                    <strong>Matric:</strong> {device.matric || "N/A"}
+                    <strong>Matric:</strong> {device.matric}
+                  </div>
+                  <div className="mb-4 text-sm text-gray-600">
+                    <strong>Date:</strong> {device.date || "N/A"}
                   </div>
 
                   <div className="mt-auto flex justify-between">

@@ -10,13 +10,14 @@ export default function Dashboard() {
       return;
     }
 
-    const headers = ["Type", "Brand", "Serial", "MAC", "Matric"];
+    const headers = ["Matric", "Brand", "Serial", "MAC", "Type", "Date"];
     const rows = storedDevices.map((d) => [
-      d.type,
+      d.matric,
       d.brand,
       d.serial,
       d.mac,
-      d.matric,
+      d.type,
+      d.date
     ]);
 
     let csvContent =

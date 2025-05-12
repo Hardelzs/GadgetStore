@@ -10,6 +10,7 @@ export default function RegisterDevice() {
     mac: "",
     matric: "",
     image: null,
+    date: new Date().toLocaleDateString(),
   });
   const [isSubmmitted, setIsSubmitted] = useState(false);
 
@@ -24,14 +25,13 @@ export default function RegisterDevice() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Retrieve existing devices from local storage
     const existingDevices = JSON.parse(localStorage.getItem("devices")) || [];
 
-    // Add the new device to the list
+  
     const newDevice = {
       ...device,
-      id: Date.now(), // Generate a unique ID
-      image: device.image ? URL.createObjectURL(device.image) : null, // Convert file to URL
+      id: Date.now(), 
+      image: device.image ? URL.createObjectURL(device.image) : null,
     };
 
     const updatedDevices = [...existingDevices, newDevice];
