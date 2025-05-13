@@ -1,12 +1,14 @@
 import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
 import { FaUser } from "react-icons/fa";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2"; // Import Line component
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
   Legend,
@@ -17,6 +19,8 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
   Legend
@@ -54,7 +58,7 @@ export default function Dashboard() {
     document.body.removeChild(link);
   };
 
-  exportToCSV()
+  exportToCSV();
 
   // Data for the Bar chart
   const data = {
@@ -73,51 +77,109 @@ export default function Dashboard() {
   };
 
   // Options for the Bar chart
-const options = {
-  responsive: true,
-  maintainAspectRatio: false, // Allow custom width and height
-  aspectRatio: 3, // Set the width-to-height ratio (e.g., 3:1 for wide)
-  plugins: {
-    legend: {
-      display: true,
-      position: "top",
-    },
-  },
-  layouts: {
-    padding: 20,
-    color: "white",
-  },
-  scales: {
-    x: {
-      ticks: {
-        color: "white",
-        font: {
-          size: 12,
-        },
-      },
-      grid: {
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false, // Allow custom width and height
+    aspectRatio: 3, // Set the width-to-height ratio (e.g., 3:1 for wide)
+    plugins: {
+      legend: {
         display: true,
-        color: "#4599EF",
+        position: "top",
       },
     },
-    y: {
-      beginAtZero: true,
-      ticks: {
-        color: "white",
-        font: {
-          size: 12  ,
+    layouts: {
+      padding: 20,
+      color: "white",
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: "white",
+          font: {
+            size: 12,
+          },
         },
-        callback: function (value) {
-          return value % 2 === 0 ? value : null;
+        grid: {
+          display: true,
+          color: "#4599EF",
         },
       },
-      grid: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          color: "white",
+          font: {
+            size: 12,
+          },
+          callback: function (value) {
+            return value % 2 === 0 ? value : null;
+          },
+        },
+        grid: {
+          display: true,
+          color: "#4599EF",
+        },
+      },
+    },
+  };
+
+  // Data for the Line chart
+  const lineData = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+    datasets: [
+      {
+        label: "Devices Over Time",
+        data: [10, 20, 15, 25, 30, 35, 40],
+        borderColor: "#4CAF50",
+        backgroundColor: "rgba(76, 175, 80, 0.2)", 
+        borderWidth: 2,
+        tension: 0.4, 
+        pointBackgroundColor: "#4CAF50", 
+        pointBorderColor: "#FFFFFF", 
+        pointBorderWidth: 2,
+        pointRadius: 4, 
+      },
+    ],
+  };
+
+  // Options for the Line chart
+  const lineOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
         display: true,
-        color: "#4599EF",
+        position: "top",
       },
     },
-  },
-};
+    scales: {
+      x: {
+        ticks: {
+          color: "white",
+          font: {
+            size: 12,
+          },
+        },
+        grid: {
+          display: true,
+          color: "#4599EF",
+        },
+      },
+      y: {
+        beginAtZero: true,
+        ticks: {
+          color: "white",
+          font: {
+            size: 12,
+          },
+        },
+        grid: {
+          display: true,
+          color: "#4599EF",
+        },
+      },
+    },
+  };
 
   return (
     <div className="flex">
@@ -152,8 +214,19 @@ const options = {
           </div>
 
           {/* Bar Chart */}
-          <div className="w-[470px] h-[200px] p-5 bg-[#2C85EC] rounded-2xl text-white">
-            <Bar data={data} options={options} />
+          <div className="flex justify-center gap-5 items-center">
+            <div className="w-[540px] h-[200px] p-5 bg-[#2C85EC] rounded-2xl text-white mb-6">
+              <Bar data={data} options={options} />
+            </div>
+
+            {/* Line Chart */}
+            <div className="w-[540px] h-[200px] p-5 bg-[#2C85EC] rounded-2xl text-white">
+              <Line data={lineData} options={lineOptions} />
+            </div>
+
+            <div className="w-[540px] h-[200px] p-5 bg-[#2C85EC] rounded-2xl text-white">
+              <Line data={lineData} options={lineOptions} />
+            </div>
           </div>
         </main>
       </div>
