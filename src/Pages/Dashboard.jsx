@@ -44,9 +44,9 @@ export default function Dashboard() {
       <div className="flex-1 ml-52">
         <Topbar />
         <main className="mt-20 p-6">
-          <div className="flex justify-between items-center mb-6 ">
+          <div className="flex justify-between items-center mb-6 text-white ">
             <div className="shadow-lg h-26 w-96 rounded-lg bg-[#FFFFFF]">
-              <p className="absolute h-13 w-13 rounded-lg bg-[#929DAE] flex items-center justify-center top-22 left-61">
+              <p className="absolute h-13 w-13 rounded-lg bg-black flex items-center justify-center top-22 left-61">
                 <FaUser />
               </p>
               <div className="ml-76 text p-1 text-[#929DAE] font-mono">
@@ -60,7 +60,7 @@ export default function Dashboard() {
             </div>
 
             <div className="shadow-lg h-26 w-96 rounded-lg bg-[#FFFFFF]">
-              <p className="absolute h-13 w-13 rounded-lg bg-green-400 flex items-center justify-center top-22 left-168">
+              <p className="absolute h-13 w-13 rounded-lg bg-green-600 flex items-center justify-center top-22 left-168">
                 <FaUser />
               </p>
               <div className="ml-76 text p-1 text-[#929DAE] font-mono">
@@ -88,7 +88,7 @@ export default function Dashboard() {
             </div>
 
             <div className="shadow-lg h-26 w-96 rounded-lg bg-[#FFFFFF]">
-              <p className="absolute h-13 w-13 rounded-lg bg-red-400 flex items-center justify-center top-22 left-382">
+              <p className="absolute h-13 w-13 rounded-lg bg-red-500 flex items-center justify-center top-22 left-382">
                 <FaUser />
               </p>
               <div className="ml-76 text p-1 text-[#929DAE] font-mono">
