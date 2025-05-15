@@ -98,7 +98,6 @@ export default function Project() {
             <p className="bg-red">Completed</p>
             <p className="text-[#929DAE]">12:00 PM</p>
           </div>
-          <hr className="mt-2 text-[#eaecee]" />
         </div>
       </div>
       <div className="shadow-lg h-96 w-[32.5%] rounded-lg bg-[#FFFFFF]  flex justify-center items-center mt-5"></div>
