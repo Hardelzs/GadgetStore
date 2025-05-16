@@ -13,7 +13,7 @@ export default function Project() {
         <div className="mt-3 overflow-x-auto">
           <table className="min-w-full text-left border-collapse">
             <thead>
-              <tr className="text-[#929DAE] font-mono text-sm">
+              <tr className="text-[#58595a] font-mono font-bold text-sm">
                 <th className="p-2">Device</th>
                 <th className="p-2">Type</th>
                 <th className="p-2">Budget</th>
@@ -21,7 +21,7 @@ export default function Project() {
                 <th className="p-2">Time/Date</th>
               </tr>
             </thead>
-            <tbody className="text-sm">
+            <tbody className="text-[#344767] font-mono text-sm">
               {[...Array(5)].map((_, index) => (
                 <tr key={index} className="border-t border-[#eaecee]">
                   <td className="p-2 flex items-center gap-2 text-[#929DAE]">
