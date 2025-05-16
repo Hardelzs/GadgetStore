@@ -46,20 +46,20 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 text-white">
             {[
               { color: "bg-black", label: "Students", value: 760, change: "+55%" },
-              { color: "bg-green-600", label: "Gadgets", value: 760, change: "+55%" },
-              { color: "bg-blue-400", label: "Students", value: 260, change: "+5%" },
-              { color: "bg-red-500", label: "Students", value: 760, change: "+75%" },
+              { color: "bg-green-600", label: "Gadgets", value: 7600, change: "+55%" },
+              { color: "bg-blue-400", label: "Students", value: "26k", change: "+5%" },
+              { color: "bg-red-500", label: "Students", value: "+76", change: "+75%" },
             ].map((card, index) => (
               <div key={index} className="bg-white shadow-lg rounded-lg p-2 relative">
                 {/* Icon */}
-                <div className={`absolute -top-4 left-4 p-3 rounded-full ${card.color} text-white`}>
+                <div className={`absolute -top-4 left-4 p-4 rounded-md ${card.color} text-white`}>
                   <FaUser className="text-lg" />
                 </div>
 
                 {/* Content */}
-                <div className="ml-16 mt-2 text-[#929DAE] font-mono">
-                  <p>{card.label}</p>
-                  <p className="text-black text-xl font-bold">{card.value}</p>
+                <div className="text-right mt-2 text-[#929DAE] font-mono">
+                  <p className="text2">{card.label}</p>
+                  <p className="text-[#344767] text-1xl font-bold">{card.value}</p>
                 </div>
 
                 <hr className="mt-4 text-[#F8F8F9]" />
