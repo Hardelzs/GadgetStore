@@ -63,7 +63,7 @@ GadgetStore/
 ├── vite.config.js
 └── README.md
 
-🔍 How It Works
+## 🔍 How It Works
 Register Gadget
 Users can fill in a form with gadget information. On submission, the data is stored in localStorage.
 
