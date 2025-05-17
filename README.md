@@ -27,7 +27,7 @@ This project was built as a school-level web application for managing gadgets, s
 
 | Dashboard | Register Page |
 |-----------|----------------|
-| ![Dashboard](./public/screenshots/dashboard.png) | ![Register](./public/screenshots/register.png) |
+| ![Dashboard](./public/Screenshots/dashboard.jpeg) | ![Register](./public/Screenshots/device.jpeg) |
 
 ---
 
