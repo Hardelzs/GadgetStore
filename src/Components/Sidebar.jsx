@@ -1,7 +1,7 @@
 import { FaLaptop, FaThList, FaUser } from "react-icons/fa";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { PiSignOutBold } from "react-icons/pi";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
   return (
@@ -17,41 +17,42 @@ export default function Sidebar() {
 
       {/* Navigation */}
       <nav className="flex flex-col gap-4 mt-1">
-        <Link
+        <NavLink
           to="/dashboard"
-          className="bg-blue-500 p-2 rounded flex items-center gap-2"
+          className={({ isActive }) =>
+            `${isActive ? "bg-blue-500" : "hover:bg-[#4c4c4e]"} p-2 rounded flex items-center gap-2`
+          }
         >
           <FaUser className="text-lg" />
           <span className="hidden md:inline">Dashboard</span>
-        </Link>
-        <Link
+        </NavLink>
+        <NavLink
           to="/Registerdevice"
-          className="hover:bg-[#4c4c4e] p-2 rounded flex items-center gap-2"
+          className={({ isActive }) =>
+            `${isActive ? "bg-blue-500" : "hover:bg-[#4c4c4e]"} p-2 rounded flex items-center gap-2`
+          }
         >
           <FaLaptop className="text-lg" />
           <span className="hidden md:inline">Register Device</span>
-        </Link>
-        <Link
+        </NavLink>
+        <NavLink
           to="/Mydevice"
-          className="hover:bg-[#4c4c4e] p-2 rounded flex items-center gap-2"
+          className={({ isActive }) =>
+            `${isActive ? "bg-blue-500" : "hover:bg-[#4c4c4e]"} p-2 rounded flex items-center gap-2`
+          }
         >
           <FaThList className="text-lg" />
           <span className="hidden md:inline">My Devices</span>
-        </Link>
-        <Link
+        </NavLink>
+        <NavLink
           to="/"
-          className="hover:bg-[#4c4c4e] p-2 rounded flex items-center gap-2 mt-auto"
+          className={({ isActive }) =>
+            `${isActive ? "bg-blue-500" : "hover:bg-[#4c4c4e]"} p-2 rounded flex items-center gap-2 mt-auto`
+          }
         >
           <PiSignOutBold className="text-lg" />
           <span className="hidden md:inline">Sign out</span>
-        </Link>
-        <Link
-          to="/"
-          className="bg-blue-500 hover:bg-[#ff4f4f] mt-[640px] text-1xl p-2 rounded flex items-center gap-2"
-        >
-          <PiSignOutBold className="text-lg" />
-          <span className="hidden md:inline">Sign out</span>
-        </Link>
+        </NavLink>
       </nav>
     </aside>
   );
