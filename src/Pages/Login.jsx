@@ -20,10 +20,10 @@ export default function Login() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Student Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         <form>
           <div className="mb-4">
-            <label className="block text-sm font-medium">Student ID</label>
+            <label className="block text-sm font-medium">ID</label>
             <input
               type="text"
               value={studentId}
