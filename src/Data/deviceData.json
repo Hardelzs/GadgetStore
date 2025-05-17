@@ -2670,9 +2670,9 @@
         "DeviceType": "Chromebook"
     },
     {
-        "DeviceBrand": "",
-        "DeviceName": "",
-        "DeviceType": ""
+        "DeviceBrand": "Asus",
+        "DeviceName": "X515",
+        "DeviceType": "Laptop"
     },
     {
         "DeviceBrand": "",

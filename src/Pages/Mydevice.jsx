@@ -94,6 +94,9 @@ export default function Mydevice() {
                     <strong>Brand:</strong> {device.brand}
                   </div>
                   <div className="mb-2">
+                    <strong>Name:</strong> {device.name}
+                  </div>
+                  <div className="mb-2">
                     <strong>Serial:</strong> {device.serial || "N/A"}
                   </div>
                   <div className="mb-4 text-sm text-gray-600">
@@ -139,6 +142,14 @@ export default function Mydevice() {
                   setEditingDevice({ ...editingDevice, brand: e.target.value })
                 }
                 placeholder="Brand"
+              />
+              <input
+                value={editingDevice.name}
+                onChange={(e) =>
+                  setEditingDevice({ ...editingDevice, name: e.target.value })
+                }
+
+                placeholder="Name"
               />
               <input
                 value={editingDevice.serial}

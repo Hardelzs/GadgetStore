@@ -1,18 +1,40 @@
 import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
 import { useState } from "react";
+import { useEffect } from "react";
+import deviceData from "../Data/deviceData.json";
 
 export default function RegisterDevice() {
   const [device, setDevice] = useState({
     type: "",
     brand: "",
+    name: "",
     serial: "",
     mac: "",
     matric: "",
-    image: null,
+    image: "",
     date: new Date().toLocaleDateString(),
   });
   const [isSubmmitted, setIsSubmitted] = useState(false);
+  const [filteredBrands, setFilteredBrands] = useState([]);
+  const [filteredNames, setFilteredNames] = useState([]);
+
+  useEffect(() => {
+    if (device.type) {
+      const filtered = deviceData.filter(
+        (item) => item.DeviceType.toLowerCase() === device.type.toLowerCase()
+      );
+
+      const brands = [...new Set(filtered.map((item) => item.DeviceBrand))];
+      const names = [...new Set(filtered.map((item) => item.DeviceName))];
+
+      setFilteredBrands(brands);
+      setFilteredNames(names);
+    } else {
+      setFilteredBrands([]);
+      setFilteredNames([]);
+    }
+  }, [device.type]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -73,10 +95,10 @@ export default function RegisterDevice() {
             Register New Device
           </h2>
           <form
-            // onSubmit={handleSubmit}
+            onSubmit={handleSubmit}
             className="bg-white p-6 rounded shadow max-w-xl space-y-4"
           >
-            <div>
+            <div required>
               <label className="block text-sm font-medium">Device Type</label>
               <select
                 name="type"
@@ -84,28 +106,51 @@ export default function RegisterDevice() {
                 value={device.type}
                 onChange={handleChange}
                 className="w-[500px] mt-1 p-2 border border-gray-300 rounded"
+    
               >
                 <option value="">-- Select Device --</option>
                 <option>Laptop</option>
                 <option>Phone</option>
                 <option>Mifi</option>
                 <option>Airpods</option>
-                <option>Tablet</option>
+                <option>Tab</option>
                 <option>Others</option>
               </select>
             </div>
-
-            <div>
+            <div required>
               <label className="block text-sm font-medium">Brand</label>
               <input
                 name="brand"
-                type="text"
-                required
+                list="brandSuggestions"
                 value={device.brand}
                 onChange={handleChange}
-                placeholder="e.g. HP, Samsung"
+                placeholder="e.g. HP, Samsung, Apple..."
+                required
                 className="w-full mt-1 p-2 border border-gray-300 rounded"
               />
+              <datalist id="brandSuggestions">
+                {filteredBrands.map((brand) => (
+                  <option key={brand} value={brand} />
+                ))}
+              </datalist>
+            </div>
+
+            <div required>
+              <label className="block text-sm font-medium">Device Name</label>
+              <input
+                name="name"
+                list="deviceNameSuggestions"
+                value={device.name}
+                onChange={handleChange}
+                placeholder="e.g. Pavilion 15, iPhone XR"
+                required
+                className="w-full mt-1 p-2 border border-gray-300 rounded"
+              />
+              <datalist id="deviceNameSuggestions">
+                {filteredNames.map((name) => (
+                  <option key={name} value={name} />
+                ))}
+              </datalist>
             </div>
 
             <div>
@@ -135,7 +180,7 @@ export default function RegisterDevice() {
               />
             </div>
 
-            <div>
+            <div required>
               <label className="block text-sm font-medium">Matric Number</label>
               <input
                 name="matric"
@@ -146,7 +191,7 @@ export default function RegisterDevice() {
                 className="w-full mt-1 p-2 border border-gray-300 rounded"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium">Date</label>
               <h2
@@ -156,7 +201,9 @@ export default function RegisterDevice() {
                 onChange={handleChange}
                 placeholder=""
                 className="w-full mt-1 p-3 border border-gray-300 rounded"
-              >{device.date}</h2>
+              >
+                {device.date}
+              </h2>
             </div>
 
             <div>

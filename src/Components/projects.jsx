@@ -1,4 +1,38 @@
+import { FaUser } from "react-icons/fa";
+import Sidebar from "./Sidebar";
+import Topbar from "./Topbar";
+
 export default function Project() {
+  const exportToCSV = () => {
+    const storedDevices = JSON.parse(localStorage.getItem("devices")) || [];
+
+    if (storedDevices.length === 0) {
+      alert("No devices to export.");
+      return;
+    }
+
+    const headers = ["Matric", "Brand", "Serial", "MAC", "Type", "Date"];
+    const rows = storedDevices.map((d) => [
+      d.matric,
+      d.brand,
+      d.serial,
+      d.mac,
+      d.type,
+      d.date,
+    ]);
+
+    let csvContent =
+      "data:text/csv;charset=utf-8," +
+      [headers, ...rows].map((e) => e.join(",")).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "registered_devices.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   return (
     <div className="md:grid lg:flex justify-between">
       {/* Left Section */}
@@ -44,9 +78,22 @@ export default function Project() {
       </div>
 
       {/* Right Section */}
-      <div className="shadow-lg h-96 md:w-[128%] lg:w-[32.5%] rounded-lg bg-white flex justify-center items-center mt-5">
-        {/* You can put your chart or widget here */}
-        <p className="text-gray-400">Placeholder Widget</p>
+      <div className="shadow-lg h-96 md:w-[128%] lg:w-[32.5%] rounded-lg bg-white mt-5 p-4">
+        <div className="text">
+          <h1>Orders overview</h1>
+          <p>
+            ^|<span>24%</span> this month
+          </p>
+        </div>
+
+        <div>
+          <button
+            onClick={exportToCSV}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+          >
+            Export Devices to CSV
+          </button>
+        </div>
       </div>
     </div>
   );
