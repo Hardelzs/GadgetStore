@@ -139,7 +139,7 @@ const lineOptions = {
       },
       grid: {
         display: true,
-        color: "#636366",
+        color: "#383838",
       },
     },
   },
@@ -176,7 +176,7 @@ const lineOptions2 = {
       },
       grid: {
         display: true,
-        color: "#ace4af",
+        color: "#63c068",
       },
     },
   },

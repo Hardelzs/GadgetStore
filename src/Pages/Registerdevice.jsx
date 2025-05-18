@@ -124,7 +124,7 @@ export default function RegisterDevice() {
           </h2>
           <form
             onSubmit={handleSubmit}
-            className="bg-white p-6 rounded shadow max-w-xl space-y-4"
+            className="bg-transparent p-6 rounded shadow-2xl max-w-xl space-y-4 focus:outline-none"
           >
             {/* Semester  */}
             <div>
@@ -165,7 +165,7 @@ export default function RegisterDevice() {
 
             {/* Device Brand */}
             <div>
-              <label className="block text-sm font-medium">Brand</label>
+              <label className="block text-sm font-medium">Brand/Model</label>
               <input
                 name="brand"
                 list="brandSuggestions"
@@ -218,7 +218,7 @@ export default function RegisterDevice() {
             {/* Device MAC Address */}
             <div>
               <label className="block text-sm font-medium">
-                MAC Address (optional)
+                MAC Address / IMEI (optional)
               </label>
               <input
                 name="mac"
