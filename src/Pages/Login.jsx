@@ -42,12 +42,18 @@ export default function Login() {
               placeholder="********"
             />
           </div>
+
           <button
             type="submit"
             className="w-full bg-[#2D2D31] text-white py-2 px-4 rounded hover:bg-[#474747] transition cursor-pointer"
           >
             Login
           </button>
+          <div className="mt-4 text-center">
+            <a href="#" className="text-sm text-blue-500 hover:underline">
+              Forgot Password?
+            </a>
+            </div>
         </form>
       </div>
     </div>
