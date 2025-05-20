@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import Anime from '../Components/Anime';
 
 
 export default function Login() {
@@ -19,6 +20,9 @@ export default function Login() {
   }
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
+       <div className='absolute left-40'>
+        <Anime />
+       </div>
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         <form onSubmit={handleSubmit}>
