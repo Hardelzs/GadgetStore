@@ -38,12 +38,12 @@ const DotGrid = () => {
     for (let j = 0; j < GRID_HEIGHT; j++) {
       dots.push(
         <div
-          className="group cursor-crosshair rounded-full p-2 transition-colors hover:bg-slate-600"
+          className="group cursor-crosshair rounded-full p-2 transition-colors hover:bg-slate-300"
           data-index={index}
           key={`${i}-${j}`}
         >
           <div
-            className="dot-point h-2 w-2 rounded-full bg-gradient-to-b from-slate-700 to-slate-400 opacity-50 group-hover:from-indigo-600 group-hover:to-white"
+            className="dot-point h-2 w-2 rounded-full bg-gradient-to-b from-slate-700 to-slate-400 opacity-50 group-hover:from-indigo-100 group-hover:to-white"
             data-index={index}
           />
         </div>
