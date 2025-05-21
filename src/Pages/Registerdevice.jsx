@@ -20,6 +20,10 @@ export default function RegisterDevice() {
   const [filteredNames, setFilteredNames] = useState([]);
   const [imagePreview, setImagePreview] = useState("");
 
+  const matricPattern = /^DU\d{4}$/i;
+  const serialPattern = /^\d{2}-\d{2}-\d{5}$/;
+  const macPattern = /^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$/;
+
   useEffect(() => {
     if (device.type) {
       const filtered = deviceData.filter(
@@ -82,6 +86,23 @@ export default function RegisterDevice() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Matric validation
+    if (!matricPattern.test(device.matric)) {
+      alert("Matric Number must be in the format DU0549");
+      return;
+    }
+    // Serial validation
+    if (!serialPattern.test(device.serial)) {
+      alert("Serial Number must be in the format 11-22-33333");
+      return;
+    }
+    // MAC validation (optional, only if filled)
+    if (device.mac && !macPattern.test(device.mac)) {
+      alert("MAC Address must be in the format 00:1B:44:11:3A:B7");
+      return;
+    }
+
     const existingDevices = JSON.parse(localStorage.getItem("devices")) || [];
     let base64Image = null;
     if (device.image && device.image instanceof File) {
@@ -136,6 +157,7 @@ export default function RegisterDevice() {
                 onChange={handleChange}
                 className="w-[500px] mt-1 p-2 border border-gray-300 rounded"
               >
+                <option value="">-- Select Semester --</option>
                 <option>Alpha Semester</option>
                 <option>Omega Semester</option>
               </select>
@@ -210,6 +232,7 @@ export default function RegisterDevice() {
                 value={device.serial}
                 onChange={handleChange}
                 placeholder="e.g. 11-22-33333"
+                pattern="\d{2}-\d{2}-\d{5}"
                 className="w-full mt-1 p-2 border border-gray-300 rounded"
               />
             </div>
@@ -225,6 +248,7 @@ export default function RegisterDevice() {
                 value={device.mac}
                 onChange={handleChange}
                 placeholder="e.g. 00:1B:44:11:3A:B7"
+                pattern="([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}"
                 className="w-full mt-1 p-2 border border-gray-300 rounded"
               />
             </div>
@@ -239,6 +263,7 @@ export default function RegisterDevice() {
                 onChange={handleChange}
                 placeholder="e.g. DU0549"
                 required
+                pattern="DU\d{4}"
                 className="w-full mt-1 p-2 border border-gray-300 rounded"
               />
             </div>

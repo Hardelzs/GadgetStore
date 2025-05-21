@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import WaterDrop from '../Components/WaterDrop';
+import { DivOrigami } from '../Components/DivOrigami';
 
 
 export default function Login() {
@@ -21,6 +22,9 @@ export default function Login() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 relative">
       {/* WaterDrop background */}
+     <div className='absolute right-5 bottom-0 '>
+       <DivOrigami/>
+     </div>
       <div className="absolute inset-0 flex items-center justify-center z-0">
         <WaterDrop />
       </div>
