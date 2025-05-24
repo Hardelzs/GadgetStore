@@ -4,51 +4,103 @@ import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
 
 export default function Mydevice() {
-  const [devices, setDevices] = useState(() => {
-    const stored = localStorage.getItem("devices");
-    return stored ? JSON.parse(stored) : [];
-  });
+const [devices, setDevices] = useState([]);
   const [editingDevice, setEditingDevice] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [deletedDeviceId, setDeletedDeviceId] = useState(null);
   const [selectedSemester, setSelectedSemester] = useState(""); // NEW
 
-  useEffect(() => {
-    const storedDevices = JSON.parse(localStorage.getItem("devices")) || [];
-    setDevices(storedDevices);
-  }, []);
-
-  const handleDelete = (id) => {
-    const confirm = window.confirm(
-      "Are you sure you want to delete this device?"
-    );
-    if (confirm) {
-      setDeletedDeviceId(id); // trigger animation
-      setTimeout(() => {
-        const updated = devices.filter((d) => d.id !== id);
-        setDevices(updated);
-        localStorage.setItem("devices", JSON.stringify(updated));
-        setDeletedDeviceId(null); // reset
-      }, 300); // match animation duration
+useEffect(() => {
+  const fetchDevices = async () => {
+    const response = await fetchDevicesFromBlob(); // Make sure this returns array
+    if (response.success) {
+      setDevices(response.devices || []);
+    } else {
+      console.error("Failed to fetch devices:", response.error);
     }
   };
+
+  fetchDevices();
+}, []);
+
+  // Fetch devices from blob
+  const fetchDevicesFromBlob = async () => {
+    try {
+      const response = await fetch("https://school-device.vercel-storage.com/devices.json")
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      return { success: true, devices: data };
+    } catch (error) {
+      console.error("Error fetching devices:", error);
+      return { success: false, error };
+    }
+  }
+
+const handleDelete = async (id) => {
+  const confirm = window.confirm(
+    "Are you sure you want to delete this device?"
+  );
+  if (confirm) {
+    setDeletedDeviceId(id);
+    setTimeout(async () => {
+      const updated = devices.filter((d) => d.id !== id);
+      setDevices(updated);
+
+      const result = await uploadUpdatedDevicesToBlob(updated); // Your upload function
+      if (!result.success) {
+        console.error("Error updating Blob after delete:", result.error);
+      }
+
+      setDeletedDeviceId(null);
+    }, 300);
+  }
+};
+  // Upload updated devices to blob
+  const uploadUpdatedDevicesToBlob = async (updatedDevices) => {    
+    try {
+      const response = await fetch(
+        "https://example.com/path/to/your/blob.json",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedDevices),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return { success: true };
+    } catch (error) {
+      console.error("Error uploading devices:", error);
+      return { success: false, error };
+    }
+  }
+
 
   function handleEdit(device) {
     setEditingDevice(device);
   }
 
-  function handleUpdate(e) {
-    e.preventDefault();
-    const devices = JSON.parse(localStorage.getItem("devices")) || [];
+const handleUpdate = async (e) => {
+  e.preventDefault();
 
-    const updatedDevices = devices.map((item) =>
-      item.id === editingDevice.id ? editingDevice : item
-    );
+  const updatedDevices = devices.map((item) =>
+    item.id === editingDevice.id ? editingDevice : item
+  );
 
-    localStorage.setItem("devices", JSON.stringify(updatedDevices));
-    setEditingDevice(null);
-    setDevices(updatedDevices);
+  setDevices(updatedDevices);
+  setEditingDevice(null);
+
+  const result = await uploadUpdatedDevicesToBlob(updatedDevices);
+  if (!result.success) {
+    console.error("Error updating device in Blob:", result.error);
   }
+};
+
 
   // Filter devices by search term and selected semester
   const filteredDevices = devices.filter((device) => {

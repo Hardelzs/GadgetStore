@@ -56,34 +56,34 @@ export default function RegisterDevice() {
     }
   };
 
-  const toBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  };
+  // const toBase64 = (file) => {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => resolve(reader.result);
+  //     reader.onerror = (error) => reject(error);
+  //   });
+  // };
 
-  const getDefaultImageForType = (type) => {
-    switch (type.toLowerCase()) {
-      case "laptop":
-        return "/default/laptop.webp";
-      case "phone":
-        return "phone.webp";
-      case "tab":
-        return "tab.webp";
-      case "airpod":
-        return "/airpods.webp";
-      case "smartwatch":
-        return "/SmartWatch.png";
-      case "mifi":
-        return "/Mifi.png";
-      case "others":
-      default:
-        return "/other.webp";
-    }
-  };
+  // const getDefaultImageForType = (type) => {
+  //   switch (type.toLowerCase()) {
+  //     case "laptop":
+  //       return "/default/laptop.webp";
+  //     case "phone":
+  //       return "phone.webp";
+  //     case "tab":
+  //       return "tab.webp";
+  //     case "airpod":
+  //       return "/airpods.webp";
+  //     case "smartwatch":
+  //       return "/SmartWatch.png";
+  //     case "mifi":
+  //       return "/Mifi.png";
+  //     case "others":
+  //     default:
+  //       return "/other.webp";
+  //   }
+  // };
 
 
 const handleSubmit = async (e) => {
@@ -101,77 +101,22 @@ const handleSubmit = async (e) => {
     return;
   }
 
-  // MAC validation (optional, only if filled)
+  // MAC validation (optional)
   if (device.mac && !macPattern.test(device.mac)) {
     alert("MAC Address must be in the format 00:1B:44:11:3A:B7");
     return;
   }
 
-  let imageUrl = null;
-
-  // 1. Upload image file to Vercel Blob if provided
-  if (device.image && device.image instanceof File) {
-    const formData = new FormData();
-    formData.append("file", device.image);
-
-    const uploadRes = await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!uploadRes.ok) {
-      const errorText = await uploadRes.text();
-      console.error("Upload error:", errorText);
-      alert("Failed to upload image to Vercel Blob.");
-      return;
-    }
-
-    const data = await uploadRes.json();
-    imageUrl = data.url; // this is the public Blob URL
-    console.log("Image URL:", imageUrl);
-
-    
-  } else {
-    // 2. Upload default image file for the device type
-    const defaultImageUrl = getDefaultImageForType(device.type);
-    console.log("Default image URL:", defaultImageUrl);
-
-    const defaultImageRes = await fetch(defaultImageUrl);
-    if (!defaultImageRes.ok) {
-      alert("Failed to fetch default image URL.");
-      return;
-    }
-    const blob = await defaultImageRes.blob();
-    const file = new File([blob], `${device.type.toLowerCase()}-default.webp`, { type: blob.type });
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const uploadRes = await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!uploadRes.ok) {
-      const errorText = await uploadRes.text();
-      console.error("Upload error:", errorText);
-      alert("Failed to upload default image.");
-      return;
-    }
-
-    const data = await uploadRes.json();
-    imageUrl = data.url;
-  }
-
+  // Prepare device data without image
   const newDevice = {
     ...device,
     id: crypto.randomUUID(),
-    image: imageUrl,
+    image: null, // Temporarily set to null
   };
 
   try {
     await uploadDevice(newDevice, newDevice.id);
-    alert("Device uploaded to Vercel Blob successfully!");
+    alert("Device uploaded successfully!");
     setDevice({
       type: "",
       brand: "",
@@ -190,6 +135,7 @@ const handleSubmit = async (e) => {
     alert("Failed to upload device.");
   }
 };
+
 
 
 

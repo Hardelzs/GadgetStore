@@ -1,5 +1,6 @@
 import { put, del, list } from '@vercel/blob';
-const BUCKET_NAME = 'school-device'; // Use your actual bucket name
+const BUCKET_NAME = 'school-device'; 
+// await put("devices.json", new Blob([JSON.stringify(devices)], { type: "application/json" }));
 
 export async function uploadDevice(deviceData, filename) {
   const blob = new Blob([JSON.stringify(deviceData)], { type: 'application/json' });
@@ -29,4 +30,30 @@ export async function fetchDevices() {
 
 export async function deleteDevice(blobPath) {
   await del(blobPath, { token: import.meta.env.VITE_BLOB_READ_WRITE_TOKEN });
+}
+
+// utils/blob.js
+
+export async function fetchDevicesFromBlob() {
+  try {
+    const res = await fetch('/api/devices.json'); // Assuming this is your blob URL
+    const devices = await res.json();
+    return { success: true, devices };
+  } catch (error) {
+    return { success: false, error };
+  }
+}
+
+export async function uploadUpdatedDevicesToBlob(devices) {
+  try {
+    const res = await fetch('/api/save-devices', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(devices),
+    });
+    if (!res.ok) throw new Error('Failed to upload');
+    return { success: true };
+  } catch (error) {
+    return { success: false, error };
+  }
 }
