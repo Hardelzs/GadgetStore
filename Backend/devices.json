@@ -1,0 +1,14 @@
+[
+  {
+    "type": "Phone",
+    "brand": "Nokia",
+    "name": "Galaxy S23",
+    "serial": "11-22-22222",
+    "mac": "00:1B:44:11:3A:B7",
+    "matric": "DU0459",
+    "image": "phone.webp",
+    "semester": "Alpha Semester",
+    "date": "25/05/2025",
+    "id": 1748213542174
+  }
+]

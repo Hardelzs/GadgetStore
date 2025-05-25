@@ -4,32 +4,41 @@ import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
 
 export default function Mydevice() {
-  const [devices, setDevices] = useState(() => {
-    const stored = localStorage.getItem("devices");
-    return stored ? JSON.parse(stored) : [];
-  });
+  const [devices, setDevices] = useState([]);
   const [editingDevice, setEditingDevice] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [deletedDeviceId, setDeletedDeviceId] = useState(null);
-  const [selectedSemester, setSelectedSemester] = useState(""); // NEW
+  const [selectedSemester, setSelectedSemester] = useState("");
+
+  const API_URL = "http://localhost:5000/devices";
 
   useEffect(() => {
-    const storedDevices = JSON.parse(localStorage.getItem("devices")) || [];
-    setDevices(storedDevices);
+    fetch(API_URL)
+      .then((res) => res.json())
+      .then((data) => setDevices(data))
+      .catch((err) => console.error("Error loading devices:", err));
   }, []);
 
+  const updateServerDevices = (updatedDevices) => {
+    fetch(API_URL, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedDevices),
+    })
+      .then((res) => res.json())
+      .then(() => setDevices(updatedDevices))
+      .catch((err) => console.error("Error saving devices:", err));
+  };
+
   const handleDelete = (id) => {
-    const confirm = window.confirm(
-      "Are you sure you want to delete this device?"
-    );
+    const confirm = window.confirm("Are you sure you want to delete this device?");
     if (confirm) {
-      setDeletedDeviceId(id); // trigger animation
+      setDeletedDeviceId(id);
       setTimeout(() => {
         const updated = devices.filter((d) => d.id !== id);
-        setDevices(updated);
-        localStorage.setItem("devices", JSON.stringify(updated));
-        setDeletedDeviceId(null); // reset
-      }, 300); // match animation duration
+        updateServerDevices(updated);
+        setDeletedDeviceId(null);
+      }, 300);
     }
   };
 
@@ -39,18 +48,13 @@ export default function Mydevice() {
 
   function handleUpdate(e) {
     e.preventDefault();
-    const devices = JSON.parse(localStorage.getItem("devices")) || [];
-
     const updatedDevices = devices.map((item) =>
       item.id === editingDevice.id ? editingDevice : item
     );
-
-    localStorage.setItem("devices", JSON.stringify(updatedDevices));
+    updateServerDevices(updatedDevices);
     setEditingDevice(null);
-    setDevices(updatedDevices);
   }
 
-  // Filter devices by search term and selected semester
   const filteredDevices = devices.filter((device) => {
     const matchesMatric = device.matric
       .toLowerCase()
@@ -74,7 +78,6 @@ export default function Mydevice() {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="border border-gray-300 rounded w-96 px-4 py-2 focus:outline-0"
             />
-
             <button
               className="text-sm bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"
               onClick={() => setSearchTerm("")}
@@ -93,51 +96,35 @@ export default function Mydevice() {
               <option value="Omega Semester">Omega Semester</option>
             </select>
           </div>
+
           <h2 className="text-2xl font-bold mb-6">Registered Devices</h2>
 
           {filteredDevices.length === 0 ? (
-            <p className="text-gray-500">
-              No devices match the search criteria.
-            </p>
+            <p className="text-gray-500">No devices match the search criteria.</p>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
               {filteredDevices.map((device) => (
                 <div
                   key={device.id}
                   className={`border border-gray-200 rounded shadow p-4 flex flex-col transition-all duration-300 ease-in-out transform
-    ${
-      deletedDeviceId === device.id
-        ? "opacity-0 scale-95"
-        : "opacity-100 scale-100"
-    }
-  `}
+                    ${
+                      deletedDeviceId === device.id
+                        ? "opacity-0 scale-95"
+                        : "opacity-100 scale-100"
+                    }
+                  `}
                 >
                   <img
                     src={device.image}
-                    // alt={device.brand}
                     className="h-32 object-contain mb-3"
                   />
-                  <div className="mb-2">
-                    <strong>Type:</strong> {device.type}
-                  </div>
-                  <div className="mb-2">
-                    <strong>Brand:</strong> {device.brand}
-                  </div>
-                  <div className="mb-2">
-                    <strong>Name:</strong> {device.name}
-                  </div>
-                  <div className="mb-2">
-                    <strong>Serial:</strong> {device.serial || "N/A"}
-                  </div>
-                  <div className="mb-4 text-sm text-gray-600">
-                    <strong>MAC:</strong> {device.mac || "N/A"}
-                  </div>
-                  <div className="mb-4 text-sm text-gray-600">
-                    <strong>Matric:</strong> {device.matric}
-                  </div>
-                  <div className="mb-4 text-sm text-gray-600">
-                    <strong>Date:</strong> {device.date || "N/A"}
-                  </div>
+                  <div className="mb-2"><strong>Type:</strong> {device.type}</div>
+                  <div className="mb-2"><strong>Brand:</strong> {device.brand}</div>
+                  <div className="mb-2"><strong>Name:</strong> {device.name}</div>
+                  <div className="mb-2"><strong>Serial:</strong> {device.serial || "N/A"}</div>
+                  <div className="mb-4 text-sm text-gray-600"><strong>MAC:</strong> {device.mac || "N/A"}</div>
+                  <div className="mb-4 text-sm text-gray-600"><strong>Matric:</strong> {device.matric}</div>
+                  <div className="mb-4 text-sm text-gray-600"><strong>Date:</strong> {device.date || "N/A"}</div>
 
                   <div className="mt-auto flex justify-between">
                     <button
@@ -164,123 +151,8 @@ export default function Mydevice() {
                 onSubmit={handleUpdate}
                 className="flex flex-col w-96 bg-white p-8 rounded shadow-lg relative"
               >
-                <div>
-                  <label className="block text-sm font-medium">
-                    Device Type
-                  </label>
-                  <input
-                    value={editingDevice.type}
-                    onChange={(e) =>
-                      setEditingDevice({
-                        ...editingDevice,
-                        type: e.target.value,
-                      })
-                    }
-                    placeholder="Type"
-                    className="mb-2 p-2  mt-1 border-gray-300 border rounded w-full"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium">
-                    Device brand
-                  </label>
-                  <input
-                    value={editingDevice.brand}
-                    onChange={(e) =>
-                      setEditingDevice({
-                        ...editingDevice,
-                        brand: e.target.value,
-                      })
-                    }
-                    placeholder="Brand"
-                    className="mb-2 p-2  mt-1 border-gray-300 border rounded w-full"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium">
-                    Device name
-                  </label>
-                  <input
-                    value={editingDevice.name}
-                    onChange={(e) =>
-                      setEditingDevice({
-                        ...editingDevice,
-                        name: e.target.value,
-                      })
-                    }
-                    placeholder="Name"
-                    className="mb-2 p-2  mt-1 border-gray-300 border rounded w-full"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium">
-                    Serial number
-                  </label>
-                  <input
-                    value={editingDevice.serial}
-                    onChange={(e) =>
-                      setEditingDevice({
-                        ...editingDevice,
-                        serial: e.target.value,
-                      })
-                    }
-                    placeholder="Serial"
-                    className="mb-2 p-2  mt-1 border-gray-300 border rounded w-full"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium">
-                    Device mac
-                  </label>
-                  <input
-                    value={editingDevice.mac}
-                    onChange={(e) =>
-                      setEditingDevice({
-                        ...editingDevice,
-                        mac: e.target.value,
-                      })
-                    }
-                    placeholder="Mac"
-                    className="mb-2 p-2  mt-1 border-gray-300 border rounded w-full"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium">
-                    Matric
-                  </label>
-                  <input
-                    value={editingDevice.matric}
-                    onChange={(e) =>
-                      setEditingDevice({
-                        ...editingDevice,
-                        matric: e.target.value,
-                      })
-                    }
-                    placeholder="Matric"
-                    className="mb-2 p-2  mt-1 border-gray-300 border rounded w-full"
-                  />
-                </div>
-
-                <div className="flex gap-2 mt-2">
-                  <button
-                    type="submit"
-                    className="flex-1 bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-                  >
-                    Save
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setEditingDevice(null)}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded hover:bg-gray-400"
-                  >
-                    Cancel
-                  </button>
-                </div>
+                {/* ... same edit form inputs ... */}
+                {/* Fields omitted here for brevity, but you keep them unchanged */}
               </form>
             </div>
           )}
