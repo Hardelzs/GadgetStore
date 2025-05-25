@@ -2,7 +2,7 @@ import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
 import { useState, useEffect } from "react";
 import deviceData from "../Data/deviceData.json";
-import { uploadDevice } from "../lib/blob";
+// import { uploadDevice } from "../lib/blob";
 
 export default function RegisterDevice() {
   const [device, setDevice] = useState({
@@ -56,67 +56,125 @@ export default function RegisterDevice() {
     }
   };
 
-  // const toBase64 = (file) => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result);
-  //     reader.onerror = (error) => reject(error);
-  //   });
-  // };
-
-  // const getDefaultImageForType = (type) => {
-  //   switch (type.toLowerCase()) {
-  //     case "laptop":
-  //       return "/default/laptop.webp";
-  //     case "phone":
-  //       return "phone.webp";
-  //     case "tab":
-  //       return "tab.webp";
-  //     case "airpod":
-  //       return "/airpods.webp";
-  //     case "smartwatch":
-  //       return "/SmartWatch.png";
-  //     case "mifi":
-  //       return "/Mifi.png";
-  //     case "others":
-  //     default:
-  //       return "/other.webp";
-  //   }
-  // };
-
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  // Matric validation
-  if (!matricPattern.test(device.matric)) {
-    alert("Matric Number must be in the format DU0549");
-    return;
-  }
-
-  // Serial validation
-  if (!serialPattern.test(device.serial)) {
-    alert("Serial Number must be in the format 11-22-33333");
-    return;
-  }
-
-  // MAC validation (optional)
-  if (device.mac && !macPattern.test(device.mac)) {
-    alert("MAC Address must be in the format 00:1B:44:11:3A:B7");
-    return;
-  }
-
-  // Prepare device data without image
-  const newDevice = {
-    ...device,
-    id: crypto.randomUUID(),
-    image: null, // Temporarily set to null
+  const toBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
   };
 
-  try {
-    await uploadDevice(newDevice, newDevice.id);
-    alert("Device uploaded successfully!");
+  const getDefaultImageForType = (type) => {
+    switch (type.toLowerCase()) {
+      case "laptop":
+        return "/laptop.webp";
+      case "phone":
+        return "phone.webp";
+      case "tab":
+        return "tab.webp";
+      case "airpod":
+        return "/airpods.webp";
+      case "smartwatch":
+        return "/SmartWatch.png";
+      case "mifi":
+        return "/Mifi.png";
+      case "others":
+      default:
+        return "/other.webp";
+    }
+  };
+
+
+// const handleSubmit = async (e) => {
+//   e.preventDefault();
+
+//   // Matric validation
+//   if (!matricPattern.test(device.matric)) {
+//     alert("Matric Number must be in the format DU0549");
+//     return;
+//   }
+
+//   // Serial validation
+//   if (!serialPattern.test(device.serial)) {
+//     alert("Serial Number must be in the format 11-22-33333");
+//     return;
+//   }
+
+//   // MAC validation (optional)
+//   if (device.mac && !macPattern.test(device.mac)) {
+//     alert("MAC Address must be in the format 00:1B:44:11:3A:B7");
+//     return;
+//   }
+
+//   // Prepare device data without image
+//   const newDevice = {
+//     ...device,
+//     id: crypto.randomUUID(),
+//     image: null, // Temporarily set to null
+//   };
+
+//   try {
+//     await uploadDevice(newDevice, newDevice.id);
+//     alert("Device uploaded successfully!");
+//     setDevice({
+//       type: "",
+//       brand: "",
+//       name: "",
+//       serial: "",
+//       mac: "",
+//       matric: "",
+//       image: "",
+//       semester: "",
+//       date: new Date().toLocaleDateString(),
+//     });
+//     setImagePreview("");
+//     setIsSubmitted(true);
+//   } catch (err) {
+//     console.error("Error uploading:", err);
+//     alert("Failed to upload device.");
+//   }
+// };
+
+
+
+
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Matric validation
+    if (!matricPattern.test(device.matric)) {
+      alert("Matric Number must be in the format DU0549");
+      return;
+    }
+    // Serial validation
+    if (!serialPattern.test(device.serial)) {
+      alert("Serial Number must be in the format 11-22-33333");
+      return;
+    }
+    // MAC validation (optional, only if filled)
+    if (device.mac && !macPattern.test(device.mac)) {
+      alert("MAC Address must be in the format 00:1B:44:11:3A:B7");
+      return;
+    }
+
+    const existingDevices = JSON.parse(localStorage.getItem("devices")) || [];
+    let base64Image = null;
+    if (device.image && device.image instanceof File) {
+      base64Image = await toBase64(device.image);
+    }
+    if (!base64Image && device.type) {
+      base64Image = getDefaultImageForType(device.type);
+    }
+    const newDevice = {
+      ...device,
+      id: Date.now(),
+      image: base64Image,
+    };
+    const updatedDevices = [...existingDevices, newDevice];
+    localStorage.setItem("devices", JSON.stringify(updatedDevices));
     setDevice({
       type: "",
       brand: "",
@@ -129,67 +187,9 @@ const handleSubmit = async (e) => {
       date: new Date().toLocaleDateString(),
     });
     setImagePreview("");
+    alert("Device registered successfully!");
     setIsSubmitted(true);
-  } catch (err) {
-    console.error("Error uploading:", err);
-    alert("Failed to upload device.");
-  }
-};
-
-
-
-
-
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   // Matric validation
-  //   if (!matricPattern.test(device.matric)) {
-  //     alert("Matric Number must be in the format DU0549");
-  //     return;
-  //   }
-  //   // Serial validation
-  //   if (!serialPattern.test(device.serial)) {
-  //     alert("Serial Number must be in the format 11-22-33333");
-  //     return;
-  //   }
-  //   // MAC validation (optional, only if filled)
-  //   if (device.mac && !macPattern.test(device.mac)) {
-  //     alert("MAC Address must be in the format 00:1B:44:11:3A:B7");
-  //     return;
-  //   }
-
-  //   const existingDevices = JSON.parse(localStorage.getItem("devices")) || [];
-  //   let base64Image = null;
-  //   if (device.image && device.image instanceof File) {
-  //     base64Image = await toBase64(device.image);
-  //   }
-  //   if (!base64Image && device.type) {
-  //     base64Image = getDefaultImageForType(device.type);
-  //   }
-  //   const newDevice = {
-  //     ...device,
-  //     id: Date.now(),
-  //     image: base64Image,
-  //   };
-  //   const updatedDevices = [...existingDevices, newDevice];
-  //   localStorage.setItem("devices", JSON.stringify(updatedDevices));
-  //   setDevice({
-  //     type: "",
-  //     brand: "",
-  //     name: "",
-  //     serial: "",
-  //     mac: "",
-  //     matric: "",
-  //     image: "",
-  //     semester: "",
-  //     date: new Date().toLocaleDateString(),
-  //   });
-  //   setImagePreview("");
-  //   alert("Device registered successfully!");
-  //   setIsSubmitted(true);
-  // };
+  };
 
   return (
     <div className="flex">
