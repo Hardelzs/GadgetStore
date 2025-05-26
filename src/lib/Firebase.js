@@ -14,7 +14,7 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDmp1nJo_qeQXbfxcD1CNqNoK9AnqPRI", // Make sure this is your actual API key
+  apiKey: "AIzaSyDmp1nJo_qeQXbfxcD1CNqNoK9AnqPRI", 
   authDomain: "schoolreg-a7ca6.firebaseapp.com",
   projectId: "schoolreg-a7ca6",
   storageBucket: "schoolreg-a7ca6.firebasestorage.app",

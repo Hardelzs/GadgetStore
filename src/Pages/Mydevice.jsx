@@ -15,16 +15,16 @@ export default function Mydevice() {
   const [selectedSemester, setSelectedSemester] = useState("");
 
   // Define your Firestore collection name
-  const COLLECTION_NAME = "devices"; // <--- Define your collection name here
+  const COLLECTION_NAME = "devices"; 
 
   const loadDevices = async () => {
     try {
-      // Pass the collection name when calling fetchDevices
+     
       const data = await fetchDevices(COLLECTION_NAME);
       setDevices(data);
     } catch (error) {
       console.error("Error loading devices:", error);
-      // Handle the error appropriately, e.g., display an error message to the user
+
     }
   };
 
@@ -35,7 +35,7 @@ export default function Mydevice() {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this device?")) return;
     try {
-      // Pass the collection name when calling deleteDevice
+  
       await deleteDevice(COLLECTION_NAME, id);
       setDeletedDeviceId(id); // trigger animation
       setTimeout(() => {
@@ -44,7 +44,7 @@ export default function Mydevice() {
       }, 300);
     } catch (error) {
       console.error("Error deleting device:", error);
-      // Handle the error appropriately
+ 
     }
   };
 
@@ -54,16 +54,16 @@ export default function Mydevice() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    if (!editingDevice) return; // Ensure there's a device to update
+    if (!editingDevice) return; 
 
     try {
-      // Pass the collection name when calling updateDevice
+
       await updateDevice(COLLECTION_NAME, editingDevice.id, editingDevice);
       setEditingDevice(null);
-      loadDevices(); // Refresh the device list
+      loadDevices(); 
     } catch (error) {
       console.error("Error updating device:", error);
-      // Handle the error appropriately
+      
     }
   };
 
