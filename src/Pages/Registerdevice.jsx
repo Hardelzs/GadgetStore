@@ -2,7 +2,7 @@ import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
 import { useState, useEffect } from "react";
 import deviceData from "../Data/deviceData.json";
-import { saveDevice, uploadImage } from "../utils/deviceService";
+import { saveDevice, uploadImage } from "../utils/deviceService.js";
 
 export default function RegisterDevice() {
   const [device, setDevice] = useState({
