@@ -1,8 +1,9 @@
 import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import deviceData from "../Data/deviceData.json";
-import { saveDevice, uploadImage } from "../utils/deviceService.js";
+import { saveDevice } from "../utils/deviceService.js";
+import { FaPlus } from "react-icons/fa";
 
 export default function RegisterDevice() {
   const [device, setDevice] = useState({
@@ -21,6 +22,7 @@ export default function RegisterDevice() {
   const [filteredBrands, setFilteredBrands] = useState([]);
   const [filteredNames, setFilteredNames] = useState([]);
   const [imagePreview, setImagePreview] = useState("");
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (device.type) {
@@ -57,13 +59,11 @@ export default function RegisterDevice() {
     e.preventDefault();
 
     try {
-      let imageUrl = "";
+      let imageBase64 = "";
 
-      // Upload image if available
       if (device.image instanceof File) {
-        imageUrl = await uploadImage(device.image);
+        imageBase64 = await toBase64(device.image);
       } else {
-        // Use a default fallback image URL if no image was uploaded
         const defaultImages = {
           Laptop: "/laptop.webp",
           Phone: "/phone.webp",
@@ -73,14 +73,14 @@ export default function RegisterDevice() {
           Smartwatch: "/smartwatch.png",
           Others: "/others.webp",
         };
-        imageUrl = defaultImages[device.type] || defaultImages["Others"];
+        imageBase64 = defaultImages[device.type] || defaultImages["Others"];
       }
 
-      const deviceWithImage = { ...device, image: imageUrl };
+      const deviceWithImage = { ...device, image: imageBase64 };
+
       await saveDevice(deviceWithImage);
       alert("Device saved successfully!");
 
-      // Reset form
       setDevice({
         type: "",
         brand: "",
@@ -99,6 +99,14 @@ export default function RegisterDevice() {
       alert("There was a problem saving the device.");
     }
   };
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
 
   return (
     <div className="flex">
@@ -256,9 +264,16 @@ export default function RegisterDevice() {
                 name="image"
                 type="file"
                 accept="image/*"
+                ref={fileInputRef}
+                style={{ margin: "20px 0" }}
                 onChange={handleChange}
-                className="w-full mt-1"
+                className="hidden"
               />
+              <button onClick={() => fileInputRef.current.click()}>
+                <FaPlus
+                  className="text-5xl border-2 border-gray-300 hover:bg-gray-300 hover:text-white p-2  text-gray-400 cursor-pointer"
+                />
+              </button>
               {imagePreview && (
                 <img
                   src={imagePreview}
@@ -271,15 +286,14 @@ export default function RegisterDevice() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition cursor-pointer"
             >
               Submit Device
             </button>
-
           </form>
 
           {/* Success Message */}
-          
+
           {isSubmitted && (
             <div className="mt-6 p-4 bg-green-100 border border-green-400 rounded">
               <h2 className="text-lg font-bold">Device Registered:</h2>

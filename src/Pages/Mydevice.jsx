@@ -7,6 +7,18 @@ import {
   updateDevice,
 } from "../../lib/Firebase";
 
+// Default image URL for devices without an image
+// const defaultImage = "https://via.placeholder.com/150?text=No+Image";
+const defaultImage = (type) => {
+  const images = {
+    Phone: "/phone.webp",
+    Laptop: "/laptop.webp",
+    Tab: "/tab.webp",
+    Other: "/device.webp",
+  };
+  return images[type] || images.Other;
+};
+
 export default function Mydevice() {
   const [devices, setDevices] = useState([]);
   const [editingDevice, setEditingDevice] = useState(null);
@@ -93,7 +105,7 @@ export default function Mydevice() {
             />
 
             <button
-              className="text-sm bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"
+              className="text-sm bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 cursor-pointer"
               onClick={() => setSearchTerm("")}
             >
               Search
@@ -103,7 +115,7 @@ export default function Mydevice() {
               name="semester"
               value={selectedSemester}
               onChange={(e) => setSelectedSemester(e.target.value)}
-              className="w-[300px] mt-1 p-2 border border-gray-300 rounded"
+              className="w-[300px] mt-1 p-2 border border-gray-300 rounded cursor-pointer"
             >
               <option value="">All Semesters</option>
               <option value="Alpha Semester">Alpha Semester</option>
@@ -129,7 +141,7 @@ export default function Mydevice() {
                 `}
                 >
                   <img
-                    src={device.image}
+                    src={device.image || defaultImage}
                     alt={device.name}
                     className="h-32 object-contain mb-3"
                   />
@@ -157,13 +169,13 @@ export default function Mydevice() {
 
                   <div className="mt-auto flex justify-between">
                     <button
-                      className="text-sm bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                      className="text-sm bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 cursor-pointer"
                       onClick={() => handleDelete(device.id)}
                     >
                       Delete
                     </button>
                     <button
-                      className="text-sm bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                      className="text-sm bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 cursor-pointer"
                       onClick={() => handleEdit(device)}
                     >
                       Edit
