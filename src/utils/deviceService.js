@@ -1,4 +1,4 @@
-import { db, storage } from "../lib/Firebase.js";
+import { storage } from "../lib/Firebase.js";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -25,6 +25,6 @@ export const saveDevice = async (device) => {
   };
 
 
-  const docRef = await addDoc(collection(db, "devices"), deviceData);
+  const docRef = await addDoc(collection( "devices"), deviceData);
   return docRef.id;
 };
