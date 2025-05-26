@@ -5,7 +5,7 @@ import {
   fetchDevices,
   deleteDevice,
   updateDevice,
-} from "../lib/Firebase";
+} from "../../lib/Firebase";
 
 export default function Mydevice() {
   const [devices, setDevices] = useState([]);
