@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { SiAmazon, SiGithub, SiGoogle, SiMeta, SiTwitch } from "react-icons/si";
 import { twMerge } from "tailwind-merge";
+import Dr0mLn01 from "/Dr0mLn01.svg";
 
 export const DivOrigami = () => {
   return (
@@ -9,7 +10,7 @@ export const DivOrigami = () => {
       <LogoRolodex
         items={[
           <LogoItem key={1} className="bg-orange-300 text-neutral-900">
-            <SiAmazon />
+             <img src={Dr0mLn01} alt="" />
           </LogoItem>,
           <LogoItem key={2} className="bg-green-300 text-neutral-900">
             <SiGoogle />
