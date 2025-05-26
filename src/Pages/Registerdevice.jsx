@@ -269,11 +269,11 @@ export default function RegisterDevice() {
                 onChange={handleChange}
                 className="hidden"
               />
-              <button onClick={() => fileInputRef.current.click()}>
+              <p onClick={() => fileInputRef.current.click()}>
                 <FaPlus
                   className="text-5xl border-2 border-gray-300 hover:bg-gray-300 hover:text-white p-2  text-gray-400 cursor-pointer"
                 />
-              </button>
+              </p>
               {imagePreview && (
                 <img
                   src={imagePreview}

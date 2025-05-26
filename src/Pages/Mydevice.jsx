@@ -45,9 +45,8 @@ export default function Mydevice() {
   }, []);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this device?")) return;
+    if (!id) return;
     try {
-  
       await deleteDevice(COLLECTION_NAME, id);
       setDeletedDeviceId(id); // trigger animation
       setTimeout(() => {
@@ -89,23 +88,23 @@ export default function Mydevice() {
   });
 
   return (
-    <div className="flex">
+    <div className="flex flex-col md:flex-row min-h-screen">
       <Sidebar />
       <div className="flex-1 md:ml-52">
         <Topbar />
-        <main className="mt-40 p-6">
+        <main className="mt-24 md:mt-40 p-2 sm:p-4 md:p-6">
           {/* Search and Filter */}
-          <div className="flex items-center justify-center mb-6 gap-4 md:mt-0 mt-10">
+          <div className="flex flex-col md:flex-row items-center justify-center mb-6 gap-4 md:mt-0 mt-10">
             <input
               type="text"
               placeholder="Matric number"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="border border-gray-300 rounded w-96 px-4 py-2 focus:outline-0"
+              className="border border-gray-300 rounded w-full md:w-80 px-4 py-2 focus:outline-0"
             />
 
             <button
-              className="text-sm bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 cursor-pointer"
+              className="text-sm bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer w-full md:w-auto"
               onClick={() => setSearchTerm("")}
             >
               Search
@@ -115,7 +114,7 @@ export default function Mydevice() {
               name="semester"
               value={selectedSemester}
               onChange={(e) => setSelectedSemester(e.target.value)}
-              className="w-[300px] mt-1 p-2 border border-gray-300 rounded cursor-pointer"
+              className="w-full md:w-[300px] mt-1 md:mt-0 p-2 border border-gray-300 rounded cursor-pointer"
             >
               <option value="">All Semesters</option>
               <option value="Alpha Semester">Alpha Semester</option>
@@ -123,12 +122,12 @@ export default function Mydevice() {
             </select>
           </div>
 
-          <h2 className="text-2xl font-bold mb-6">Registered Devices</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center md:text-left">Registered Devices</h2>
 
           {filteredDevices.length === 0 ? (
-            <p className="text-gray-500">No devices match the search criteria.</p>
+            <p className="text-gray-500 text-center">No devices match the search criteria.</p>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {filteredDevices.map((device) => (
                 <div
                   key={device.id}
@@ -141,9 +140,9 @@ export default function Mydevice() {
                 `}
                 >
                   <img
-                    src={device.image || defaultImage}
+                    src={device.image || defaultImage(device.type)}
                     alt={device.name}
-                    className="h-32 object-contain mb-3"
+                    className="h-32 object-contain mb-3 w-full pointer-events-none "
                   />
                   <div className="mb-2">
                     <strong>Type:</strong> {device.type}
@@ -167,7 +166,7 @@ export default function Mydevice() {
                     <strong>Date:</strong> {device.date || "N/A"}
                   </div>
 
-                  <div className="mt-auto flex justify-between">
+                  <div className="mt-auto flex flex-col sm:flex-row gap-2 justify-between">
                     <button
                       className="text-sm bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 cursor-pointer"
                       onClick={() => handleDelete(device.id)}
@@ -188,15 +187,12 @@ export default function Mydevice() {
 
           {/* EDIT MODAL */}
           {editingDevice && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm px-2">
               <form
                 onSubmit={handleUpdate}
-                className="flex flex-col w-96 bg-white p-8 rounded shadow-lg relative"
+                className="flex flex-col w-full max-w-md bg-white p-4 sm:p-8 rounded shadow-lg relative"
               >
                 {[
-                  { key: "type", label: "Device Type" },
-                  { key: "brand", label: "Device Brand" },
-                  { key: "name", label: "Device Name" },
                   { key: "serial", label: "Serial Number" },
                   { key: "mac", label: "Device MAC" },
                   { key: "matric", label: "Matric" },
@@ -206,7 +202,7 @@ export default function Mydevice() {
                       {field.label}
                     </label>
                     <input
-                      value={editingDevice[field.key] || ""} // Added || "" to prevent controlled component warnings if value is null/undefined
+                      value={editingDevice[field.key] || ""}
                       onChange={(e) =>
                         setEditingDevice({
                           ...editingDevice,

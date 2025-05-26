@@ -1,5 +1,13 @@
 import { db } from "../../lib/Firebase.js";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs } from "firebase/firestore";
+
+export async function getDevices() {
+  const querySnapshot = await getDocs(collection(db, "devices"));
+  return querySnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+}
 
 // Convert file to Base64
 const toBase64 = (file) =>
@@ -9,6 +17,7 @@ const toBase64 = (file) =>
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
+
 
   const getDefaultImage = (type) => {
   const images = {
