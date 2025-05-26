@@ -1,4 +1,4 @@
-import { db, storage } from "../lib/firebase";
+import { db, storage } from "../lib/Firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
