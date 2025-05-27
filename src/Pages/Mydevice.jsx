@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
-import {
-  fetchDevices,
-  deleteDevice,
-  updateDevice,
-} from "../../lib/Firebase";
+import { fetchDevices, deleteDevice, updateDevice } from "../../lib/Firebase";
 
 // Default image URL for devices without an image
 // const defaultImage = "https://via.placeholder.com/150?text=No+Image";
@@ -25,18 +21,17 @@ export default function Mydevice() {
   const [searchTerm, setSearchTerm] = useState("");
   const [deletedDeviceId, setDeletedDeviceId] = useState(null);
   const [selectedSemester, setSelectedSemester] = useState("");
+  const [searchDate, setSearchDate] = useState("");
 
   // Define your Firestore collection name
-  const COLLECTION_NAME = "devices"; 
+  const COLLECTION_NAME = "devices";
 
   const loadDevices = async () => {
     try {
-     
       const data = await fetchDevices(COLLECTION_NAME);
       setDevices(data);
     } catch (error) {
       console.error("Error loading devices:", error);
-
     }
   };
 
@@ -55,7 +50,6 @@ export default function Mydevice() {
       }, 300);
     } catch (error) {
       console.error("Error deleting device:", error);
- 
     }
   };
 
@@ -65,16 +59,14 @@ export default function Mydevice() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    if (!editingDevice) return; 
+    if (!editingDevice) return;
 
     try {
-
       await updateDevice(COLLECTION_NAME, editingDevice.id, editingDevice);
       setEditingDevice(null);
-      loadDevices(); 
+      loadDevices();
     } catch (error) {
       console.error("Error updating device:", error);
-      
     }
   };
 
@@ -82,9 +74,20 @@ export default function Mydevice() {
     const matchesMatric = device.matric
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
+
+    let matchesDate = true;
+    if (searchDate) {
+      if (device.date) {
+        // Accepts "YYYY" or "YYYY-MM"
+        matchesDate = device.date.startsWith(searchDate); // e.g. "2024-05" or "2024"
+      } else {
+        matchesDate = false;
+      }
+    }
+
     const matchesSemester =
       !selectedSemester || device.semester === selectedSemester;
-    return matchesMatric && matchesSemester;
+    return matchesMatric && matchesSemester && matchesDate;
   });
 
   return (
@@ -110,6 +113,14 @@ export default function Mydevice() {
               Search
             </button>
 
+            <input
+              type="text"
+              placeholder="e.g. 2025-05 or 2025"
+              value={searchDate}
+              onChange={(e) => setSearchDate(e.target.value)}
+              className="border border-gray-300 rounded w-full md:w-80 px-4 py-2 focus:outline-0"
+            />
+
             <select
               name="semester"
               value={selectedSemester}
@@ -122,10 +133,22 @@ export default function Mydevice() {
             </select>
           </div>
 
-          <h2 className="text-2xl font-bold mb-6 text-center md:text-left">Registered Devices</h2>
+          {searchTerm && (
+            <div className="text-center mb-2 text-red-500 font-semibold">
+              {filteredDevices.length} device
+              {filteredDevices.length !== 1 ? "s" : ""} found for matric "
+              {searchTerm}"
+            </div>
+          )}
+
+          <h2 className="text-2xl font-bold mb-6 text-center md:text-left">
+            Registered Devices
+          </h2>
 
           {filteredDevices.length === 0 ? (
-            <p className="text-gray-500 text-center">No devices match the search criteria.</p>
+            <p className="text-gray-500 text-center">
+              No devices match the search criteria.
+            </p>
           ) : (
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {filteredDevices.map((device) => (
