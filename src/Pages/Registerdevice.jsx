@@ -2,7 +2,7 @@ import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
 import { useState, useEffect, useRef } from "react";
 import deviceData from "../Data/deviceData.json";
-import { saveDevice } from "../utils/deviceService.js";
+import { saveDevice } from "../utils/deviceservice.js";
 import { FaPlus } from "react-icons/fa";
 
 export default function RegisterDevice() {
@@ -112,7 +112,7 @@ export default function RegisterDevice() {
     <div className="flex">
       <Sidebar />
       <div className="flex-1 md:ml-52 md:mt-0 mt-10">
-        <Topbar />
+        <Topbar pageName="Register"/>
         <main className="mt-20 flex flex-col justify-center items-center  p-6">
           <h2 className="text-2xl font-bold mb-6 text-center">
             Register New Device

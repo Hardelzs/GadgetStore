@@ -3,8 +3,7 @@ import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
 import { fetchDevices, deleteDevice, updateDevice } from "../../lib/Firebase";
 
-// Default image URL for devices without an image
-// const defaultImage = "https://via.placeholder.com/150?text=No+Image";
+
 const defaultImage = (type) => {
   const images = {
     Phone: "/phone.webp",
@@ -134,7 +133,7 @@ export default function Mydevice() {
           </div>
 
           {searchTerm && (
-            <div className="text-center mb-2 text-red-500 font-semibold">
+            <div className="text-center mb-2 text-red-300 font-semibold">
               {filteredDevices.length} device
               {filteredDevices.length !== 1 ? "s" : ""} found for matric "
               {searchTerm}"
@@ -185,9 +184,9 @@ export default function Mydevice() {
                   <div className="mb-2 text-sm text-gray-600">
                     <strong>Matric:</strong> {device.matric}
                   </div>
-                  <div className="mb-4 text-sm text-gray-600">
-                    <strong>Date:</strong> {device.date || "N/A"}
-                  </div>
+                  {/* <div className="mb-4 text-sm text-gray-600">
+                    <strong>Date:</strong> {device.date}
+                  </div> */}
 
                   <div className="mt-auto flex flex-col sm:flex-row gap-2 justify-between">
                     <button
@@ -255,6 +254,7 @@ export default function Mydevice() {
                 </div>
               </form>
             </div>
+            
           )}
         </main>
       </div>
