@@ -2,7 +2,7 @@ import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
 import { useState, useEffect, useRef } from "react";
 import deviceData from "../Data/deviceData.json";
-import { saveDevice } from "../utils/deviceservice.js";
+import { saveDevice } from "../utils/deviceService.js";
 import { FaPlus } from "react-icons/fa";
 
 export default function RegisterDevice() {
@@ -18,7 +18,7 @@ export default function RegisterDevice() {
     date: new Date().toLocaleDateString(),
   });
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  // const [isSubmitted, setIsSubmitted] = useState(false);
   const [filteredBrands, setFilteredBrands] = useState([]);
   const [filteredNames, setFilteredNames] = useState([]);
   const [imagePreview, setImagePreview] = useState("");
@@ -93,7 +93,7 @@ export default function RegisterDevice() {
         date: new Date().toLocaleDateString(),
       });
       setImagePreview("");
-      setIsSubmitted(true);
+      // setIsSubmitted(true);
     } catch (err) {
       console.error("Error saving device:", err);
       alert("There was a problem saving the device.");
@@ -294,7 +294,7 @@ export default function RegisterDevice() {
 
           {/* Success Message */}
 
-          {isSubmitted && (
+          {/* {isSubmitted && (
             <div className="mt-6 p-4 bg-green-100 border border-green-400 rounded">
               <h2 className="text-lg font-bold">Device Registered:</h2>
               <h2>
@@ -319,7 +319,7 @@ export default function RegisterDevice() {
                 Date : <strong>{device.date}</strong>
               </h2>
             </div>
-          )}
+          )} */}
         </main>
       </div>
     </div>

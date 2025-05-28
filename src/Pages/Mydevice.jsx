@@ -4,14 +4,8 @@ import Topbar from "../Components/Topbar";
 import { fetchDevices, deleteDevice, updateDevice } from "../../lib/Firebase";
 
 
-const defaultImage = (type) => {
-  const images = {
-    Phone: "/phone.webp",
-    Laptop: "/laptop.webp",
-    Tab: "/tab.webp",
-    Other: "/device.webp",
-  };
-  return images[type] || images.Other;
+const defaultImage = () => {
+
 };
 
 export default function Mydevice() {
@@ -77,8 +71,7 @@ export default function Mydevice() {
     let matchesDate = true;
     if (searchDate) {
       if (device.date) {
-        // Accepts "YYYY" or "YYYY-MM"
-        matchesDate = device.date.startsWith(searchDate); // e.g. "2024-05" or "2024"
+        matchesDate = device.date.startsWith(searchDate); 
       } else {
         matchesDate = false;
       }
@@ -114,7 +107,7 @@ export default function Mydevice() {
 
             <input
               type="text"
-              placeholder="e.g. 2025-05 or 2025"
+              placeholder="Day e.g 28"
               value={searchDate}
               onChange={(e) => setSearchDate(e.target.value)}
               className="border border-gray-300 rounded w-full md:w-80 px-4 py-2 focus:outline-0"
@@ -137,6 +130,13 @@ export default function Mydevice() {
               {filteredDevices.length} device
               {filteredDevices.length !== 1 ? "s" : ""} found for matric "
               {searchTerm}"
+            </div>
+          )}
+          {searchDate && (
+            <div className="text-center mb-2 text-red-300 font-semibold">
+              {filteredDevices.length} device
+              {filteredDevices.length !== 1 ? "s" : ""} found for Date "
+              {searchDate}"
             </div>
           )}
 
@@ -184,9 +184,9 @@ export default function Mydevice() {
                   <div className="mb-2 text-sm text-gray-600">
                     <strong>Matric:</strong> {device.matric}
                   </div>
-                  {/* <div className="mb-4 text-sm text-gray-600">
-                    <strong>Date:</strong> {device.date}
-                  </div> */}
+                  <div className="mb-4 text-sm text-gray-600">
+                    <strong>Date:</strong> {device.date|| "N/A"}
+                  </div>
 
                   <div className="mt-auto flex flex-col sm:flex-row gap-2 justify-between">
                     <button

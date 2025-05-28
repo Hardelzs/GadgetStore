@@ -25,6 +25,9 @@ const toBase64 = (file) =>
     Phone: "/phone.webp",
     Laptop: "/laptop.webp",
     Tab: "/tab.webp",
+    Smartwatch: "/SmartWatch.png",
+    Mifi: "Mifi.png",
+    Airpod: "airpods.webp",
     Other: "/others.webp",
   };
   return images[type] || images.Other;
@@ -35,6 +38,9 @@ export const saveDevice = async (device) => {
   if (device.image instanceof File) {
     base64Image = await toBase64(device.image);
   }
+  //  else if (typeof device.image === "string" && device.image.startswith("data:image")){
+  //   base64Image = device.image
+  // }
 
 const deviceData = {
   ...device,
