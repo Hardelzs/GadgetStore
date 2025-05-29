@@ -72,7 +72,7 @@ export default function Dashboard() {
           </div>
 
           {/* Chart + Projects */}
-          <div>
+          <div className="mt-10">
             <Chart />
             <Project />
           </div>
