@@ -195,7 +195,7 @@ export default function Chart() {
         </div>
         <div className="p-4  text-[#929DAE] font-mono">
           <p className="font-medium text-black">Gadgets view</p>
-          <p className="text2">Gadgets performance</p>
+
           <p className="text2 mt-2 flex items-center gap-1">
             <IoTimeOutline />
             Updated 4 min ago
@@ -212,7 +212,7 @@ export default function Chart() {
         </div>
         <div className="p-4  text-[#929DAE] font-mono">
           <p className="font-medium text-black">Gadgets view</p>
-          <p className="text2">Gadgets performance</p>
+
           <p className="text2 mt-2 flex items-center gap-1">
             <IoTimeOutline />
             Updated 4 min ago
@@ -229,7 +229,7 @@ export default function Chart() {
         </div>
         <div className="p-4 text-left text-[#929DAE] font-mono">
           <p className="font-medium text-black">Gadgets view</p>
-          <p className="text2">Gadgets performance</p>
+
           <p className="text2 mt-2 flex items-center gap-1">
             <IoTimeOutline />
             Updated 4 min ago
