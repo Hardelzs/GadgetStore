@@ -233,6 +233,7 @@ export default function Mydevice() {
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
                           <AlertDialogAction
                             onClick={() => handleDelete(device.id)}
+                            className="bg-red-700"
                           >
                             Continue
                           </AlertDialogAction>
