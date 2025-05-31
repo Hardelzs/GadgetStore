@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-import WaterDrop from '../Components/WaterDrop';
-import { DivOrigami } from '../Components/DivOrigami';
+import WaterDrop from '../components/WaterDrop';
+import { DivOrigami } from '../components/DivOrigami';
 
 
 export default function Login() {
