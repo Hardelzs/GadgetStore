@@ -8,7 +8,7 @@ import Mydevice from "./pages/Mydevice";
 
 const App = ()  =>{
   return (
-    <Router basename="">
+    <Router>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
