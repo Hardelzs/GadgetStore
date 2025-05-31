@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-import WaterDrop from '../components/WaterDrop';
+// import WaterDrop from '../components/WaterDrop';
+import WaterDrop from '../Components/WaterDrop';
 import { DivOrigami } from '../components/DivOrigami';
 
 
