@@ -2,7 +2,7 @@ import {animate} from "animejs";
 
 const WaterDrop = () => {
   return (
-    <div className="relative grid place-content-center  px-8 py-12">
+    <div className="relative grid place-content-center items-center md:ml-0 ml-27  px-8 py-12">
       <DotGrid />
     </div>
   );
@@ -56,7 +56,7 @@ const DotGrid = () => {
     <div
       onClick={handleDotClick}
       style={{ gridTemplateColumns: `repeat(${GRID_WIDTH}, 1fr)` }}
-      className="grid w-fit"
+      className="grid w-fit items-center"
     >
       {dots}
     </div>
