@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import DownloadCSV from "./DownloadCsv";
-import download from "/download.jpg";
 import { fetchDevices } from "../../lib/Firebase";
 
 export default function Project() {
@@ -28,6 +27,7 @@ export default function Project() {
           }).length;
 
         setDevicesThisMonth(count);
+      // eslint-disable-next-line no-unused-vars
       } catch (error) {
         setDevicesThisMonth(0);
       }
@@ -82,12 +82,7 @@ export default function Project() {
 
       {/* Right Section */}
       <div className="shadow-lg h-96 md:w-[128%] lg:w-[32.5%] rounded-lg bg-white mt-5 p-4 text-center justify-center items-center flex">
-        <img
-          src={download}
-          alt=""
-          className="w-[540px] h-[370px] rounded-2xl absolute"
-        />
-        <div className="relative z-10">
+        <div className="relative ">
           <DownloadCSV />
         </div>
       </div>

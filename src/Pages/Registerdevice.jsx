@@ -15,7 +15,7 @@ export default function RegisterDevice() {
     matric: "",
     image: "",
     semester: "",
-    date: new Date().toLocaleDateString(),
+    date: new Date().toISOString().slice(0, 10), // <-- ISO format
   });
 
   // const [isSubmitted, setIsSubmitted] = useState(false);
@@ -92,8 +92,9 @@ export default function RegisterDevice() {
         matric: "",
         image: "",
         semester: "",
-        date: new Date().toLocaleDateString(),
+        date: new Date().toISOString().slice(0, 10), // <-- ISO format
       });
+    
       setImagePreview("");
       // setIsSubmitted(true);
     } catch (err) {
