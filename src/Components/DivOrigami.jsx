@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { SiAmazon, SiGithub, SiGoogle, SiMeta, SiTwitch } from "react-icons/si";
 import { twMerge } from "tailwind-merge";
 import Dr0mLn01 from "/Dr0mLn01.svg";
+import nacos from "/nacos.webp"
 
 export const DivOrigami = () => {
   return (
@@ -13,17 +14,17 @@ export const DivOrigami = () => {
              <img src={Dr0mLn01} alt="" />
           </LogoItem>,
           <LogoItem key={2} className="bg-green-300 text-neutral-900">
-            <SiGoogle />
+            <img src={nacos} alt="" />
           </LogoItem>,
-          <LogoItem key={3} className="bg-blue-300 text-neutral-900">
-            <SiMeta />
-          </LogoItem>,
-          <LogoItem key={4} className="bg-white text-black">
-            <SiGithub />
-          </LogoItem>,
-          <LogoItem key={5} className="bg-purple-300 text-neutral-900">
-            <SiTwitch />
-          </LogoItem>,
+          // <LogoItem key={3} className="bg-blue-300 text-neutral-900">
+          //   <SiMeta />
+          // </LogoItem>,
+          // <LogoItem key={4} className="bg-white text-black">
+          //   <SiGithub />
+          // </LogoItem>,
+          // <LogoItem key={5} className="bg-purple-300 text-neutral-900">
+          //   <SiTwitch />
+          // </LogoItem>,
         ]}
       />
     </section>
