@@ -96,7 +96,12 @@ export default function Mydevice() {
     let matchesDate = true;
     if (searchDate) {
       if (device.date) {
-        matchesDate = device.date.startsWith(searchDate);
+        const dateParts = device.date.toLowerCase().split("/");
+        // e.g. ["thu", "september", "2025"]
+
+        matchesDate = dateParts.some((part) =>
+          part.includes(searchDate.toLowerCase())
+        );
       } else {
         matchesDate = false;
       }
@@ -104,6 +109,7 @@ export default function Mydevice() {
 
     const matchesSemester =
       !selectedSemester || device.semester === selectedSemester;
+
     return matchesMatric && matchesSemester && matchesDate;
   });
 
@@ -132,7 +138,7 @@ export default function Mydevice() {
 
             <input
               type="text"
-              placeholder="Day e.g 28"
+              placeholder="Search by date (e.g. 28, 09, 2025)"
               value={searchDate}
               onChange={(e) => setSearchDate(e.target.value)}
               className="border border-gray-300 rounded w-full md:w-80 px-4 py-2 focus:outline-0"
