@@ -30,7 +30,7 @@ const data = {
   datasets: [
     {
       label: "Gadget",
-      data: [10, 10, 0, 10, 0, 0],
+      data: [10, 20, 0, 10, 0, 0],
       backgroundColor: "white",
       borderColor: "#000000",
       borderWidth: 0,
