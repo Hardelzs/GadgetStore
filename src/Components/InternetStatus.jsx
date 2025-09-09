@@ -18,7 +18,7 @@ const InternetStatus = () => {
         setTimeout(() => {
           setShowOnlineMessage(false);
           localStorage.setItem("onlineMessageShown", "true"); // Mark as shown
-        }, 2 * 60 * 1000); // 2 minutes
+        }, 60 * 1000); // 2 minutes
       }
     };
 
@@ -47,7 +47,7 @@ const InternetStatus = () => {
   if (!isOnline) {
     return (
       <div
-        className="z-20 fixed top-0 left-1/2 transform -translate-x-1/2 px-4 py-2"
+        className="z-20 relative top-0  px-4 py-2"
         style={{
           color: "white",
           backgroundColor: "red",
@@ -57,7 +57,7 @@ const InternetStatus = () => {
           fontWeight: "bold",
         }}
       >
-        ⚠️ You are Offline, do not close this tab!
+        ⚠️ You are Offline, Activities are not saved yet, Do not close the tab!
       </div>
     );
   }
@@ -65,7 +65,7 @@ const InternetStatus = () => {
   if (isOnline && showOnlineMessage) {
     return (
       <div
-        className="z-20 fixed top-0 left-1/2 transform -translate-x-1/2 px-4 py-2"
+        className="z-20 relative top-0  px-4 py-2"
         style={{
           color: "white",
           backgroundColor: "green",
@@ -75,7 +75,7 @@ const InternetStatus = () => {
           fontWeight: "bold",
         }}
       >
-        ✅ You are Online. If you close this tab, devices are not saved!
+        ✅ You are Online. !
       </div>
     );
   }
