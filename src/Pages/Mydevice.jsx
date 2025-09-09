@@ -154,13 +154,20 @@ export default function Mydevice() {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="border border-gray-300 rounded w-full md:w-80 px-4 py-2 focus:outline-0"
             />
-
+            <input
+              type="text"
+              placeholder="Hall of Residence"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="border border-gray-300 rounded w-full md:w-80 px-4 py-2 focus:outline-0"
+            />
+{/* 
             <button
               className="text-sm bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer w-full md:w-auto"
               onClick={() => setSearchTerm("")}
             >
               Search
-            </button>
+            </button> */}
 
             <input
               type="text"

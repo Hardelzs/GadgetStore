@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import DownloadCSV from "./DownloadCsv";
 import { fetchDevices } from "../../lib/Firebase";
+import DigitalClock from "./DigitalClock";
 
 // Helper function to format date as Mon/April/2025
 function formatDeviceDate(dateStr) {
@@ -41,7 +42,7 @@ export default function Project() {
           }).length;
 
         setDevicesThisMonth(count);
-      // eslint-disable-next-line no-unused-vars
+        // eslint-disable-next-line no-unused-vars
       } catch (error) {
         setData([]);
         setDevicesThisMonth(0);
@@ -114,6 +115,7 @@ export default function Project() {
       <div className="shadow-lg h-96 md:w-[128%] lg:w-[32.5%] rounded-lg bg-white mt-5 p-4 text-center justify-center items-center flex">
         <div className="relative ">
           <DownloadCSV />
+          <DigitalClock />
         </div>
       </div>
     </div>

@@ -58,13 +58,29 @@ export default function RegisterDevice() {
   const handleStudentChange = (e) => {
     const { name, value } = e.target;
     let val = value;
+    let updatedStudent = { ...student, [name]: val };
+
+    // Always uppercase and start with DU for matric
     if (name === "matric") {
       val = val.toUpperCase();
       if (!val.startsWith("DU")) {
         val = "DU" + val.replace(/^DU/i, "");
       }
+      updatedStudent.matric = val;
     }
-    setStudent((prev) => ({ ...prev, [name]: val }));
+
+    // Auto-set gender based on hallresidence
+    if (name === "hallresidence") {
+      if (["Faith Hall", "Bishop Hall", "Victory Hall"].includes(val)) {
+        updatedStudent.gender = "Female";
+      } else if (["New Hall", "Rehoboth Hall"].includes(val)) {
+        updatedStudent.gender = "Male";
+      } else {
+        updatedStudent.gender = "";
+      }
+    }
+
+    setStudent(updatedStudent);
   };
 
   // Device input change
@@ -179,30 +195,43 @@ export default function RegisterDevice() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="bg-transparent p-6 rounded shadow-2xl w-full max-w-3xl space-y-6">
+          <form onSubmit={handleSubmit} className="bg-transparent p-6 rounded shadow-2xl w-full max-w-5xl space-y-8">
             {/* Section 1 - Student Details */}
-            <div className="border-b pb-4">
+            <section className="p-6 border rounded-md shadow bg-white">
+
               <h2 className="font-bold text-lg mb-2">Student Details</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input name="hallresidence" value={student.hallresidence} onChange={handleStudentChange} placeholder="Hall of Residence" className="p-2 border rounded" required />
+               
                 <select name="semester" value={student.semester} onChange={handleStudentChange} className="p-2 border rounded" required>
                   <option value="">-- Select Semester --</option>
                   <option>Alpha Semester</option>
                   <option>Omega Semester</option>
                 </select>
-                <select name="gender" value={student.gender} onChange={handleStudentChange} className="p-2 border rounded" required>
+                <select name="hallresidence" value={student.hallresidence} onChange={handleStudentChange} className="p-2 border rounded" required>
+                  <option value="">-- Select Hall --</option>
+                  <option>Faith Hall</option>
+                  <option>Bishop Hall</option>
+                  <option>Victory Hall</option>
+                  <option>New Hall</option>
+                  <option>Rehoboth Hall</option>
+                </select>
+                <select name="gender" value={student.gender} onChange={handleStudentChange} className="p-2 border rounded" required disabled={
+                  ["Faith Hall", "Bishop Hall", "Victory Hall", "New Hall", "Rehoboth Hall"].includes(student.hallresidence)
+                }>
                   <option value="">-- Select Gender --</option>
-                  <option>Male</option>
-                  <option>Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
                 </select>
                 <input name="matric" value={student.matric} onChange={handleStudentChange} placeholder="e.g. DU0549" className="p-2 border rounded" required />
               </div>
-            </div>
+
+            </section>
+
 
             {/* Section 2 - Device Count & Date */}
-            <div className="border-b pb-4">
-              <h2 className="font-bold text-lg mb-2">Devices Info</h2>
-              <div className="flex items-center gap-4 flex-wrap">
+            <section className="p-6 border rounded-md shadow bg-white">
+              <h2 className="font-bold text-lg mb-4">Devices Selection</h2>
+              <div className="flex gap-4 flex-wrap">
                 {[...Array(10)].map((_, i) => (
                   <label key={i} className="flex items-center gap-1">
                     <input type="radio" name="deviceCount" value={i + 1} checked={deviceCount === i + 1} onChange={handleDeviceCountChange} />
@@ -210,80 +239,84 @@ export default function RegisterDevice() {
                   </label>
                 ))}
               </div>
-              <div className="mt-2">
+              <div className="mt-4">
                 <label className="block text-sm font-medium">Date</label>
-                <input type="text" value={formatDeviceDate(student.date)} className="w-full mt-1 p-2 border rounded" readOnly />
+                <input type="text" value={formatDeviceDate(student.date)} className="w-full p-2 border rounded" readOnly />
               </div>
-            </div>
+            </section>
 
             {/* Section 3 - Devices */}
-            <div>
-              <h2 className="font-bold text-lg mb-2">Device Details</h2>
+            <section className="p-6 border rounded-md shadow bg-white">
+              <h2 className="font-bold text-lg mb-4">Device Details</h2>
               {devices.map((device, index) => (
-                <div key={index} className="p-4 border rounded-lg mt-4">
-                  <h3 className="font-semibold mb-2">Device {index + 1}</h3>
+                <div key={index} className="mb-6  pb-4">
+                  <i><h3 className="font-semibold text-2xl mb-2">Device {index + 1}</h3></i>
 
-                  {/* Type */}
-                  <select name="type" value={device.type} onChange={(e) => handleDeviceChange(e, index)} className="w-full mt-1 p-2 border rounded" required>
-                    <option value="">-- Select Device --</option>
-                    <option>Laptop</option>
-                    <option>Phone</option>
-                    <option>Tab</option>
-                    <option>Airpod</option>
-                    <option>Mifi</option>
-                    <option>Smartwatch</option>
-                    <option>Others</option>
-                  </select>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Type */}
+                    <select name="type" value={device.type} onChange={(e) => handleDeviceChange(e, index)} className="p-2 border rounded" required>
+                      <option value="">-- Select Device --</option>
+                      <option>Laptop</option>
+                      <option>Phone</option>
+                      <option>Tab</option>
+                      <option>Airpod</option>
+                      <option>Mifi</option>
+                      <option>Smartwatch</option>
+                      <option>Others</option>
+                    </select>
 
-                  {/* Brand */}
-                  <div className="mt-2">
-                    <label className="block text-sm font-medium">Brand/Model</label>
-                    <input name="brand" list={`brandSuggestions-${index}`} value={device.brand} onChange={(e) => handleDeviceChange(e, index)} placeholder="e.g. HP, Samsung, Apple..." className="w-full mt-2  p-2 border rounded" required />
-                    <datalist id={`brandSuggestions-${index}`}>
-                      {filteredBrands[index]?.map((brand) => (
-                        <option key={brand} value={brand} />
-                      ))}
-                    </datalist>
+                    {/* Brand */}
+                    <div className="">
+                      <label className="block text-sm font-medium">Brand/Model</label>
+                      <input name="brand" list={`brandSuggestions-${index}`} value={device.brand} onChange={(e) => handleDeviceChange(e, index)} placeholder="e.g. HP, Samsung, Apple..." className="w-full mt-2  p-2 border rounded" required />
+                      <datalist id={`brandSuggestions-${index}`}>
+                        {filteredBrands[index]?.map((brand) => (
+                          <option key={brand} value={brand} />
+                        ))}
+                      </datalist>
+                    </div>
+
+                    {/* Name */}
+                    <div className="">
+                      <label className="block text-sm font-medium">Device Name</label>
+                      <input name="name" list={`deviceNameSuggestions-${index}`} value={device.name} onChange={(e) => handleDeviceChange(e, index)} placeholder="e.g. Pavilion 15, iPhone XR" className="w-full mt-1 p-2 border rounded" required />
+                      <datalist id={`deviceNameSuggestions-${index}`}>
+                        {filteredNames[index]?.map((name) => (
+                          <option key={name} value={name} />
+                        ))}
+                      </datalist>
+                    </div>
+
+                    {/* Serial */}
+                    <div className="">
+                      <label className="block text-sm font-medium">Serial Number</label>
+                      <input name="serial" value={device.serial} onChange={(e) => handleDeviceChange(e, index)} placeholder="Serial Number" className="w-full  p-2 border rounded" required />
+                    </div>
+
+                    {/* MAC */}
+                    <div>
+                      <label className="block text-sm font-medium">
+                        MAC Address / IMEI (optional)
+                      </label>
+                      <input name="mac" value={device.mac} onChange={(e) => handleDeviceChange(e, index)} placeholder="MAC Address / IMEI (optional)" className="w-full p-2 border rounded" />
+                    </div>
+
+                    {/* Image */}
+
+                    <div className="">
+                      <label className="block text-sm font-medium">Upload Image</label>
+                      <input type="file" name="image" accept="image/*" ref={(el) => (fileInputRefs.current[index] = el)} onChange={(e) => handleDeviceChange(e, index)} className="hidden" />
+                      <p onClick={() => fileInputRefs.current[index].click()}>
+                        <FaPlus className="text-5xl border-2 border-gray-300 hover:bg-gray-300 hover:text-white p-2 text-gray-400 cursor-pointer" />
+                      </p>
+                      {imagePreviews[index] && <img src={imagePreviews[index]} alt={device.name} className="w-32 h-32 object-cover rounded" />}
+                    </div>
                   </div>
 
-                  {/* Name */}
-                  <div className="mt-2">
-                    <label className="block text-sm font-medium">Device Name</label>
-                    <input name="name" list={`deviceNameSuggestions-${index}`} value={device.name} onChange={(e) => handleDeviceChange(e, index)} placeholder="e.g. Pavilion 15, iPhone XR" className="w-full mt-1 p-2 border rounded" required />
-                    <datalist id={`deviceNameSuggestions-${index}`}>
-                      {filteredNames[index]?.map((name) => (
-                        <option key={name} value={name} />
-                      ))}
-                    </datalist>
-                  </div>
 
-                  {/* Serial */}
-                  <div className="mt-2">
-                    <label className="block text-sm font-medium">Serial Number</label>
-                    <input name="serial" value={device.serial} onChange={(e) => handleDeviceChange(e, index)} placeholder="Serial Number" className="w-full mt-1 p-2 border rounded" required />
-                  </div>
-
-                  {/* MAC */}
-                  <div>
-                    <label className="block text-sm font-medium">
-                      MAC Address / IMEI (optional)
-                    </label>
-                    <input name="mac" value={device.mac} onChange={(e) => handleDeviceChange(e, index)} placeholder="MAC Address / IMEI (optional)" className="w-full mt-1 p-2 border rounded" />
-                  </div>
-
-                  {/* Image */}
-                  
-                  <div className="mt-2">
-                    <label className="block text-sm font-medium">Upload Image</label>
-                    <input type="file" name="image" accept="image/*" ref={(el) => (fileInputRefs.current[index] = el)} onChange={(e) => handleDeviceChange(e, index)} className="hidden" />
-                    <p onClick={() => fileInputRefs.current[index].click()}>
-                      <FaPlus className="text-5xl border-2 border-gray-300 hover:bg-gray-300 hover:text-white p-2 text-gray-400 cursor-pointer" />
-                    </p>
-                    {imagePreviews[index] && <img src={imagePreviews[index]} alt={device.name} className="w-32 h-32 object-cover rounded" />}
-                  </div>
                 </div>
               ))}
-            </div>
+            </section>
 
             {/* Submit */}
             <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition cursor-pointer">

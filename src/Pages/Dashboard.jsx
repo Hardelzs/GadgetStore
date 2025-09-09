@@ -4,7 +4,8 @@ import Project from "../Components/projects";
 import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
 import { FaUser } from "react-icons/fa";
-import { fetchDevices } from "../../lib/Firebase"; // Make sure this import is correct
+import { fetchDevices } from "../../lib/Firebase"; 
+import InternetStatus from "../Components/InternetStatus";
 
 export default function Dashboard() {
   const [cards, setCards] = useState([
@@ -60,6 +61,7 @@ export default function Dashboard() {
       <Sidebar />
       <div className="flex-1 md:ml-52  transition-all duration-300">
         <Topbar />
+        <InternetStatus></InternetStatus>
         <main className="mt-25 p-4 md:p-2">
           {/* Info Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 text-white">
