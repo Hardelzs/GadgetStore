@@ -7,23 +7,31 @@ const InternetStatus = () => {
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);
-      setShowOnlineMessage(true);
 
-      // Hide online message after 2 minutes
-      setTimeout(() => {
-        setShowOnlineMessage(false);
-      }, 2 * 60 * 1000); // 2 minutes
+      // Check if we've already shown the online message before
+      const alreadyShown = localStorage.getItem("onlineMessageShown");
+
+      if (!alreadyShown) {
+        setShowOnlineMessage(true);
+
+        // Hide online message after 2 minutes
+        setTimeout(() => {
+          setShowOnlineMessage(false);
+          localStorage.setItem("onlineMessageShown", "true"); // Mark as shown
+        }, 2 * 60 * 1000); // 2 minutes
+      }
     };
 
     const handleOffline = () => {
       setIsOnline(false);
-      setShowOnlineMessage(false); // Force show offline warning always
+      setShowOnlineMessage(false); 
+      localStorage.removeItem("onlineMessageShown"); // Reset so it shows again after reconnect
     };
 
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
 
-    // Initial setup
+    // Initial check
     if (navigator.onLine) {
       handleOnline();
     } else {
@@ -49,7 +57,7 @@ const InternetStatus = () => {
           fontWeight: "bold",
         }}
       >
-        ⚠️ You are Offline, Activities are not saved yet, Do not close the tab!
+        ⚠️ You are Offline, do not close this tab!
       </div>
     );
   }
@@ -67,12 +75,12 @@ const InternetStatus = () => {
           fontWeight: "bold",
         }}
       >
-        ✅ You are Online. !
+        ✅ You are Online. If you close this tab, devices are not saved!
       </div>
     );
   }
 
-  return null; // Nothing is shown after 2min online message disappears
+  return null;
 };
 
 export default InternetStatus;

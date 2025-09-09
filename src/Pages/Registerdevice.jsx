@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import deviceData from "../Data/deviceData.json";
 import { saveDevice } from "../utils/deviceService.js";
 import { FaPlus } from "react-icons/fa";
+import InternetStatus from "@/Components/InternetStatus";
 
 export default function RegisterDevice() {
   // Student info
@@ -187,7 +188,8 @@ export default function RegisterDevice() {
     <div className="flex">
       <Sidebar />
       <div className="flex-1 md:ml-52 md:mt-0 mt-10">
-        <Topbar pageName="Register device" middlename="Register multiple Devices" />
+        <Topbar pageName="Register device" middlename="Register Device" />
+        <InternetStatus />
         <main className="mt-20 flex flex-col justify-center items-center p-6 w-full">
           {successMessage && (
             <div className="mb-4 w-full max-w-3xl text-center p-3 rounded bg-green-100 text-green-700 border border-green-300 shadow">
