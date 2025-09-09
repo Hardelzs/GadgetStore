@@ -18,7 +18,7 @@ const InternetStatus = () => {
         setTimeout(() => {
           setShowOnlineMessage(false);
           localStorage.setItem("onlineMessageShown", "true"); // Mark as shown
-        }, 60 * 1000); // 2 minutes
+        }, 3000); // 3sec
       }
     };
 
@@ -52,12 +52,11 @@ const InternetStatus = () => {
           color: "white",
           backgroundColor: "red",
           textAlign: "center",
-          borderRadius: "8px",
           fontSize: "16px",
           fontWeight: "bold",
         }}
       >
-        ⚠️ You are Offline, Activities are not saved yet, Do not close the tab!
+         You are Offline, Activities are not saved yet, Do not close the tab!
       </div>
     );
   }
@@ -70,12 +69,11 @@ const InternetStatus = () => {
           color: "white",
           backgroundColor: "green",
           textAlign: "center",
-          borderRadius: "8px",
           fontSize: "16px",
           fontWeight: "bold",
         }}
       >
-        ✅ You are Online. !
+         You are Online. !
       </div>
     );
   }
