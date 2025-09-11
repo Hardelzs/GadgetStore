@@ -119,6 +119,7 @@ export default function RegisterDevice() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const now = new Date().toISOString(); // Get current date and time
       const savedDevices = await Promise.all(
         devices.map(async (device) => {
           let imageBase64 = "";
@@ -138,7 +139,8 @@ export default function RegisterDevice() {
             imageBase64 = defaultImages[device.type] || defaultImages["Others"];
           }
 
-          return { ...student, ...device, image: imageBase64 };
+          // Merge student, device, image, and registration date/time
+          return { ...student, ...device, image: imageBase64, date: now };
         })
       );
 
@@ -146,7 +148,7 @@ export default function RegisterDevice() {
         await saveDevice(d);
       }
 
-      setSuccessMessage("✅ Devices registered successfully!");
+      setSuccessMessage("Devices registered successfully!");
       setTimeout(() => setSuccessMessage(""), 3000);
 
       setStudent({
@@ -154,7 +156,7 @@ export default function RegisterDevice() {
         semester: "",
         gender: "",
         matric: "",
-        date: new Date().toISOString().slice(0, 10),
+        date: new Date().toISOString(),
       });
       setDevices([{ type: "", brand: "", name: "", serial: "", mac: "", image: "" }]);
       setDeviceCount(1);
@@ -174,15 +176,15 @@ export default function RegisterDevice() {
       reader.readAsDataURL(file);
     });
 
-  function formatDeviceDate(dateStr) {
-    if (!dateStr) return "N/A";
-    const date = new Date(dateStr);
-    if (isNaN(date)) return dateStr;
-    const day = date.toLocaleString("en-US", { weekday: "short", timeZone: "Africa/Lagos" });
-    const month = date.toLocaleString("en-US", { month: "short", timeZone: "Africa/Lagos" });
-    const year = date.toLocaleString("en-US", { year: "numeric", timeZone: "Africa/Lagos" });
-    return `${day} / ${month} / ${year}`;
-  }
+function formatDeviceDate(dateStr) {
+  if (!dateStr) return "N/A";
+  const date = new Date(dateStr);
+  if (isNaN(date)) return dateStr;
+  const day = date.toLocaleString("en-US", { weekday: "short", timeZone: "Africa/Lagos" });
+  const month = date.toLocaleString("en-US", { month: "short", timeZone: "Africa/Lagos" });
+  const year = date.toLocaleString("en-US", { year: "numeric", timeZone: "Africa/Lagos" });
+  return `${day} / ${month} / ${year}`;
+}
 
   return (
     <div className="flex">
@@ -191,11 +193,7 @@ export default function RegisterDevice() {
         <Topbar pageName="Register device" />
         <InternetStatus />
         <main className="mt-20 flex flex-col justify-center items-center p-6 w-full">
-          {successMessage && (
-            <div className="mb-4 w-full max-w-3xl text-center p-3 rounded bg-green-100 text-green-700 border border-green-300 shadow">
-              {successMessage}
-            </div>
-          )}
+
 
           <form onSubmit={handleSubmit} className="bg-transparent p-6 rounded shadow-2xl w-full max-w-5xl space-y-8">
             {/* Section 1 - Student Details */}
@@ -203,13 +201,13 @@ export default function RegisterDevice() {
 
               <h2 className="font-bold text-lg mb-2">Student Details</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-               
+
                 <select name="semester" value={student.semester} onChange={handleStudentChange} className="p-2 border rounded" required>
                   <option value="">-- Select Semester --</option>
                   <option>Alpha Semester</option>
                   <option>Omega Semester</option>
                 </select>
-                <select name="hallresidence" value={student.hallresidence} onChange={handleStudentChange} className="p-2 border rounded" required>
+                <select name="hallresidence" value={student.hallresidence} onChange={handleStudentChange} className="p-2 border rounded " required>
                   <option value="">-- Select Hall --</option>
                   <option>Faith Hall</option>
                   <option>Bishop Hall</option>
@@ -217,10 +215,10 @@ export default function RegisterDevice() {
                   <option>New Hall</option>
                   <option>Rehoboth Hall</option>
                 </select>
-                <select name="gender" value={student.gender} onChange={handleStudentChange} className="p-2 border rounded" required disabled={
+                <select name="gender" value={student.gender} onChange={handleStudentChange} className="outline-o p-2 border text-[#968d8d] rounded" readOnly disabled={
                   ["Faith Hall", "Bishop Hall", "Victory Hall", "New Hall", "Rehoboth Hall"].includes(student.hallresidence)
                 }>
-                  <option value="">-- Select Gender --</option>
+                  <option value="">-- Choose Hall--</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                 </select>
@@ -243,7 +241,7 @@ export default function RegisterDevice() {
               </div>
               <div className="mt-4">
                 <label className="block text-sm font-medium">Date</label>
-                <input type="text" value={formatDeviceDate(student.date)} className="w-full p-2 border rounded" readOnly />
+                <input type="text" value={formatDeviceDate(student.date)} className="w-full text-[#968d8d] outline-0 p-2 border rounded" readOnly />
               </div>
             </section>
 
@@ -325,6 +323,12 @@ export default function RegisterDevice() {
               Submit Devices
             </button>
           </form>
+
+          {successMessage && (
+            <div className="fixed text bottom-4 right-1 w-60 text-center p-3 rounded bg-green-100 text-green-700 border border-green-300 shadow">
+              {successMessage}
+            </div>
+          )}
         </main>
       </div>
     </div>

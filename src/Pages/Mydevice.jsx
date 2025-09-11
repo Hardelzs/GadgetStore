@@ -14,7 +14,8 @@ import {
   AlertDialogTrigger,
 } from "@/Components/ui/alert-dialog";
 import InternetStatus from "@/Components/InternetStatus";
-import { IoCalendarNumberOutline } from "react-icons/io5";
+import { IoCalendarNumberOutline } from "react-icons/io5";  
+import TimeOut from "@/Components/TimeOut";
 
 const defaultImage = () => { };
 
@@ -89,7 +90,8 @@ export default function Mydevice() {
     const day = date.toLocaleString("en-US", { weekday: "short" });
     const month = date.toLocaleString("en-US", { month: "short" });
     const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    const time = date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", timeZone: "Africa/Lagos" });
+    return `${day}/${month}/${year} | ${time}`;
   }
 
   const filteredDevices = sortedDevices.filter((device) => {
@@ -123,31 +125,66 @@ export default function Mydevice() {
     return matchesMatric && matchesSemester && matchesDate && matchesHall && matchesGender;
   });
 
-  function downloadCSV(data, filename = "devices.csv") {
-    if (!data.length) return;
-    const headers = Object.keys(data[0]);
-    const csvRows = [
-      headers.join(","),
-      ...data.map((row) =>
-        headers
-          .map(
-            (field) =>
-              `"${(row[field] ?? "").toString().replace(/"/g, '""')}"`
-          )
-          .join(",")
-      ),
-    ];
-    const csvContent = csvRows.join("\n");
-    const blob = new Blob([csvContent], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
+function downloadCSV(data, filename = "devices.csv") {
+  if (!data.length) return;
+
+  // Convert each device into CSV-friendly row
+  const enhancedData = data.map((row) => {
+    const dateObj = row.date ? new Date(row.date) : null;
+
+    const formattedDate = dateObj
+      ? dateObj.toLocaleDateString("en-US", {
+          weekday: "short",
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        })
+      : "N/A";
+
+    const formattedTime = dateObj
+      ? dateObj.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        })
+      : "N/A";
+
+    // Remove id and image, add Date & Time separately
+    // eslint-disable-next-line no-unused-vars
+    const { id, image, date, ...rest } = row;
+    return {
+      ...rest,
+      Date: formattedDate,
+      Time: formattedTime,
+    };
+  });
+
+  // Headers (keys from enhancedData)
+  const headers = Object.keys(enhancedData[0]);
+  const csvRows = [
+    headers.join(","), // header row
+    ...enhancedData.map((row) =>
+      headers
+        .map(
+          (field) =>
+            `"${(row[field] ?? "").toString().replace(/"/g, '""')}"`
+        )
+        .join(",")
+    ),
+  ];
+
+  const csvContent = csvRows.join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
@@ -155,6 +192,8 @@ export default function Mydevice() {
       <div className="flex-1 md:ml-52">
         <Topbar pageName="Devices" middlename="" />
         <InternetStatus />
+              <TimeOut hours={2} /> 
+
         <main className="mt-25 p-2 sm:p-4 md:p-6">
           {/* Search and Filter */}
           <div className="flex flex-col md:flex-row items-center justify-center  gap-4 ">
@@ -282,8 +321,8 @@ export default function Mydevice() {
                   <div className="mb-2 text-sm text-gray-600">
                     <strong>Matric:</strong> {device.matric}
                   </div>
-                  <div className="mb-4 text-sm text-gray-600 ">
-                    <strong>Date:</strong> {formatDeviceDate(device.date)}
+                  <div className="mb-4 text-sm text-gray-600 flex items-center gap-1 ">
+                    <strong className="flex items-center text-[20px] gap-1"><IoCalendarNumberOutline />:</strong> {formatDeviceDate(device.date)}
                   </div>
 
                   <div className="mt-auto flex flex-col sm:flex-row gap-2 justify-between">
