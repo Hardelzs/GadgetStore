@@ -4,16 +4,33 @@ import Login from "./Pages/Login";
 import Dashboard from "@/Pages/Dashboard";
 import Registerdevice from "@/Pages/Registerdevice";
 import Mydevice from "@/Pages/Mydevice";
+// import ProtectedRoute from "./Components/ProtectedRoute";
 // import { CheckboxReactHookFormSingle } from "./Components/CheckboxReactHookFormSingle";
 
-const App = ()  => {
+const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/Registerdevice" element={<Registerdevice/>} />
-        <Route path="/Mydevice" element={<Mydevice/>} />
+
+        <Route path="/dashboard" element={
+          // <ProtectedRoute>
+            <Dashboard />
+          //  </ProtectedRoute>
+
+        } />
+        <Route path="/Registerdevice" element={
+          // <ProtectedRoute>
+            <Registerdevice />
+          // </ProtectedRoute>
+        } />
+
+        <Route path="/Mydevice" element={
+          // <ProtectedRoute>
+            <Mydevice />
+          // </ProtectedRoute>
+
+        } />
         {/* <Route path="/Omega" element={<CheckboxReactHookFormSingle />} /> */}
       </Routes>
     </Router>

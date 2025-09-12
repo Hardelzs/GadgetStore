@@ -3,14 +3,14 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../lib/firebase"; // adjust path
 import { Bar, Line } from "react-chartjs-2";
 import { IoTimeOutline } from "react-icons/io5";
-import { options, lineOptions2, lineOptions } from "./wait";
+import {  options, lineOptions2, lineOptions } from "./wait";
 
-export default function Chart() {
+export default function ChartData() {
   const [barData, setBarData] = useState({
     labels: ["Lap", "Phn", "Mifi", "Airpod", "Tab", "Others"],
     datasets: [
       {
-        label: "Device",
+        label: "Gadget",
         data: [0, 0, 0, 0, 0, 0], // start empty
         backgroundColor: "white",
         borderColor: "#000000",
@@ -40,23 +40,14 @@ export default function Chart() {
     const unsubscribe = onSnapshot(collection(db, "devices"), (snapshot) => {
       const counts = { Lap: 0, Phn: 0, Mifi: 0, Airpod: 0, Tab: 0, Others: 0 };
 
-
       snapshot.docs.forEach((doc) => {
-        let device = doc.data().type || "";
-
-        // normalize device name
-        device = device.trim().toLowerCase();
-        console.log("Device type from Firestore:", device);
-
-
-        if (device.includes("laptop")) counts.Lap += 1;
-        else if (device.includes("phn") || device.includes("phone")) counts.Phn += 1;
-        else if (device.includes("mifi")) counts.Mifi += 1;
-        else if (device.includes("airpod")) counts.Airpod += 1;
-        else if (device.includes("tab") || device.includes("tablet")) counts.Tab += 1;
-        else counts.Others += 1;
+        const device = doc.data().deviceType; // adjust field name
+        if (counts[device] !== undefined) {
+          counts[device] += 1;
+        } else {
+          counts.Others += 1;
+        }
       });
-
 
       setBarData((prev) => ({
         ...prev,
@@ -91,7 +82,7 @@ export default function Chart() {
   }, []);
 
   return (
-    <div className="mt-15 flex flex-wrap gap-6 justify-center">
+        <div className="mt-15 flex flex-wrap gap-6 justify-center">
       {/* CHART CARD 1 */}
 
       <div className="shadow-lg w-full sm:w-[90%] md:w-[88%] lg:w-[32%] rounded-lg bg-[#FFFFFF]">
