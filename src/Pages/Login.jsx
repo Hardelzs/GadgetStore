@@ -10,14 +10,15 @@ export default function Login() {
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
 
+  const storedPassword = localStorage.getItem("password") || "dudevice01";
+
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    if (studentId === "Dominion" && password === "dudevice01") {
-      navigate("/dashboard")
+    e.preventDefault();
+    if (studentId === "Dominion" && password === storedPassword) {
+      navigate("/dashboard");
     } else {
-      alert("Error: Invalid Student ID or Password")
-      // navigate("/dashboard")
+      alert("Error: Invalid Student ID or Password");
     }
   }
   return (
@@ -61,7 +62,7 @@ export default function Login() {
             Login
           </button>
           <div className="mt-3 sm:mt-4 text-center">
-            <a href="#" className="text-xs sm:text-sm text-blue-500 hover:underline">
+            <a href="/password" className="text-xs sm:text-sm text-blue-500 hover:underline">
               Forgot Password?
             </a>
           </div>

@@ -4,6 +4,7 @@ import Login from "./Pages/Login";
 import Dashboard from "@/Pages/Dashboard";
 import Registerdevice from "@/Pages/Registerdevice";
 import Mydevice from "@/Pages/Mydevice";
+import ForgotPassword from "./Pages/ForgotPassword";
 // import ProtectedRoute from "./Components/ProtectedRoute";
 // import { CheckboxReactHookFormSingle } from "./Components/CheckboxReactHookFormSingle";
 
@@ -28,6 +29,12 @@ const App = () => {
         <Route path="/Mydevice" element={
           // <ProtectedRoute>
             <Mydevice />
+          // </ProtectedRoute>
+
+        } />
+        <Route path="/password" element={
+          // <ProtectedRoute>
+            <ForgotPassword />
           // </ProtectedRoute>
 
         } />
