@@ -95,7 +95,6 @@ export default function Mydevice() {
   }
 
   const filteredDevices = sortedDevices.filter((device) => {
-    console.log(device)
     const matchesMatric = device.matric
       .toLowerCase()
       .includes(searchTerm.toLowerCase());

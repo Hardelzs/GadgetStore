@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
  // adjust path if needed
 
-export default function TimeOut({ hours = 2 }) {
+export default function TimeOut({ hours = 1 }) {
   const navigate = useNavigate();
 
   useEffect(() => {

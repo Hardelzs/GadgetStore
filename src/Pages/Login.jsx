@@ -41,7 +41,7 @@ export default function Login() {
               value={studentId}
               onChange={(e) => setStudentId(e.target.value)}
               className="w-full mt-1 p-2 border border-gray-300 rounded text-xs sm:text-base"
-              placeholder="e.g. DU0459"
+              placeholder="Enter your ID"
             />
           </div>
           <div className="mb-4 sm:mb-6">
