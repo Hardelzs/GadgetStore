@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
-import { fetchDevices, deleteDevice, updateDevice } from "../../lib/Firebase";
+import { fetchDevices, deleteDevice, updateDevice } from "../../lib/firebase";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -95,6 +95,7 @@ export default function Mydevice() {
   }
 
   const filteredDevices = sortedDevices.filter((device) => {
+    console.log(device)
     const matchesMatric = device.matric
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
