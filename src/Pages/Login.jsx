@@ -1,15 +1,16 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import WaterDrop from '../components/WaterDrop';
 import WaterDrop from '../Components/WaterDrop';
 import { DivOrigami } from '../Components/DivOrigami';
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 
 export default function Login() {
   const [studentId, setStudentId] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
-
+  const [show, setShow] = useState(false)
   const storedPassword = localStorage.getItem("password") || "dudevice01";
 
 
@@ -21,11 +22,15 @@ export default function Login() {
       alert("Error: Invalid Student ID or Password");
     }
   }
+
+  const handleclick = () => {
+    setShow(!show)
+  }
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 relative">
       {/* WaterDrop background */}
       <div className="absolute left-435 bottom-0 sm:right-5">
-        <DivOrigami/>
+        <DivOrigami />
       </div>
       <div className="absolute inset-0 flex items-center justify-center z-0">
         <WaterDrop />
@@ -46,13 +51,18 @@ export default function Login() {
           </div>
           <div className="mb-4 sm:mb-6">
             <label className="block text-xs sm:text-sm font-medium">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full mt-1 p-2 border border-gray-300 rounded text-xs sm:text-base"
-              placeholder="********"
-            />
+            <div className="flex items-center justify-between">
+              <input
+                type={show ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className=" mt-1 p-2 border w-[39vh] border-gray-300 rounded text-xs sm:text-base"
+                placeholder="********"
+              />
+              <p
+                onClick={handleclick}
+                className='ml-[-5vh] text-1xl cursor-pointer hover:text-[red] duration-300 '>{show ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}</p>
+            </div>
           </div>
 
           <button
