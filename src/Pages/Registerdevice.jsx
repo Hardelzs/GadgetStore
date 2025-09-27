@@ -290,7 +290,7 @@ function formatDeviceDate(dateStr) {
                     {/* Serial */}
                     <div className="">
                       <label className="block text-sm font-medium">Serial Number</label>
-                      <input name="serial" value={device.serial} onChange={(e) => handleDeviceChange(e, index)} placeholder="Serial Number" className="w-full  p-2 border rounded" required />
+                      <input name="serial" value={device.serial} onChange={(e) => handleDeviceChange(e, index)} placeholder="Serial Number" className="w-full  p-2 border rounded" />
                     </div>
 
                     {/* MAC */}
