@@ -14,7 +14,7 @@ import {
   AlertDialogTrigger,
 } from "@/Components/ui/alert-dialog";
 import InternetStatus from "@/Components/InternetStatus";
-import { IoCalendarNumberOutline } from "react-icons/io5";  
+import { IoCalendarNumberOutline } from "react-icons/io5";
 import TimeOut from "@/Components/TimeOut";
 
 const defaultImage = () => { };
@@ -28,6 +28,9 @@ export default function Mydevice() {
   const [searchDate, setSearchDate] = useState("");
   const [selectedHall, setSelectedHall] = useState(""); // 1. Add this state
   const [selectedGender, setSelectedGender] = useState(""); // Add this line
+  const [cards, setCards] = useState([
+    { label: "Gadgets", value: 0 }
+  ]);
 
   // Define your Firestore collection name
   const COLLECTION_NAME = "devices";
@@ -43,6 +46,16 @@ export default function Mydevice() {
 
   useEffect(() => {
     loadDevices();
+    async function loadStats() {
+      const device = await fetchDevices("devices");
+      const gadgets = device.length;
+      setCards([
+        { label: "Gadgets", value: gadgets }
+      ]);
+
+    }
+    loadStats()
+
   }, []);
 
   const handleDelete = async (id) => {
@@ -125,65 +138,65 @@ export default function Mydevice() {
     return matchesMatric && matchesSemester && matchesDate && matchesHall && matchesGender;
   });
 
-function downloadCSV(data, filename = "devices.csv") {
-  if (!data.length) return;
+  function downloadCSV(data, filename = "devices.csv") {
+    if (!data.length) return;
 
-  // Convert each device into CSV-friendly row
-  const enhancedData = data.map((row) => {
-    const dateObj = row.date ? new Date(row.date) : null;
+    // Convert each device into CSV-friendly row
+    const enhancedData = data.map((row) => {
+      const dateObj = row.date ? new Date(row.date) : null;
 
-    const formattedDate = dateObj
-      ? dateObj.toLocaleDateString("en-US", {
+      const formattedDate = dateObj
+        ? dateObj.toLocaleDateString("en-US", {
           weekday: "short",
           month: "short",
           day: "2-digit",
           year: "numeric",
         })
-      : "N/A";
+        : "N/A";
 
-    const formattedTime = dateObj
-      ? dateObj.toLocaleTimeString("en-US", {
+      const formattedTime = dateObj
+        ? dateObj.toLocaleTimeString("en-US", {
           hour: "2-digit",
           minute: "2-digit",
           hour12: true,
         })
-      : "N/A";
+        : "N/A";
 
-    // Remove id and image, add Date & Time separately
-    // eslint-disable-next-line no-unused-vars
-    const { id, image, date, ...rest } = row;
-    return {
-      ...rest,
-      Date: formattedDate,
-      Time: formattedTime,
-    };
-  });
+      // Remove id and image, add Date & Time separately
+      // eslint-disable-next-line no-unused-vars
+      const { id, image, date, ...rest } = row;
+      return {
+        ...rest,
+        Date: formattedDate,
+        Time: formattedTime,
+      };
+    });
 
-  // Headers (keys from enhancedData)
-  const headers = Object.keys(enhancedData[0]);
-  const csvRows = [
-    headers.join(","), // header row
-    ...enhancedData.map((row) =>
-      headers
-        .map(
-          (field) =>
-            `"${(row[field] ?? "").toString().replace(/"/g, '""')}"`
-        )
-        .join(",")
-    ),
-  ];
+    // Headers (keys from enhancedData)
+    const headers = Object.keys(enhancedData[0]);
+    const csvRows = [
+      headers.join(","), // header row
+      ...enhancedData.map((row) =>
+        headers
+          .map(
+            (field) =>
+              `"${(row[field] ?? "").toString().replace(/"/g, '""')}"`
+          )
+          .join(",")
+      ),
+    ];
 
-  const csvContent = csvRows.join("\n");
-  const blob = new Blob([csvContent], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
+    const csvContent = csvRows.join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
 
 
   return (
@@ -192,7 +205,7 @@ function downloadCSV(data, filename = "devices.csv") {
       <div className="flex-1 md:ml-52">
         <Topbar pageName="Devices" middlename="" />
         <InternetStatus />
-              <TimeOut hours={2} /> 
+        <TimeOut hours={2} />
 
         <main className="mt-25 p-2 sm:p-4 md:p-6">
           {/* Search and Filter */}
@@ -249,10 +262,8 @@ function downloadCSV(data, filename = "devices.csv") {
               <option value="Female">Female</option>
             </select>
 
-
-
-
           </div>
+
 
           {searchTerm && (
             <div className="text-center mb-2 text-red-300 font-semibold">
@@ -270,7 +281,7 @@ function downloadCSV(data, filename = "devices.csv") {
           )}
 
 
-          <h2 className="absolute mt-10    z-50 left-54">
+          <h2 className="absolute mt-10 grid-cols-2   z-50 left-54">
 
             <button
               className="mb-4 bg-green-600 text-white px-4 py-2 m-4 rounded hover:bg-green-700 transition cursor-pointer"
@@ -279,7 +290,26 @@ function downloadCSV(data, filename = "devices.csv") {
             >
               Download Filtered Results
             </button>
+
+            <div className="-mt-15 ml-65">
+              {cards.map((card, index) => (
+                <div
+                  key={index}
+                  className=""
+                >
+                  {/* Content */}
+                  <div className=" mt-2 text-[#929DAE] font-mono">
+                    <p className="text2">{card.label}</p>
+                    <p className="text-[#344767] text-1xl font-bold">
+                      {card.value}
+                    </p>
+                  </div>
+
+                </div>
+              ))}
+            </div>
           </h2>
+
 
           {filteredDevices.length === 0 ? (
             <p className="text-gray-500 text-center">
@@ -376,6 +406,8 @@ function downloadCSV(data, filename = "devices.csv") {
                   { key: "serial", label: "Serial Number" },
                   { key: "mac", label: "Device MAC" },
                   { key: "matric", label: "Matric" },
+                  { key: "brand", label: "brand" },
+                  { key: "name", label: "name" },
                 ].map((field) => (
                   <div key={field.key}>
                     <label className="block text-sm font-medium">
