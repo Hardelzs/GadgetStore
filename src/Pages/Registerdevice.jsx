@@ -14,6 +14,7 @@ export default function RegisterDevice() {
     gender: "",
     matric: "",
     date: new Date().toISOString().slice(0, 10),
+    
   });
 
   // Device count
