@@ -245,7 +245,7 @@ export default function Mydevice() {
                 placeholder="Day(e.g.28)"
                 value={searchDay}
                 onChange={(e) => setSearchDay(e.target.value)}
-                className="border border-gray-300 rounded w-24 px-4 py-1 focus:outline-0"
+                className="border border-gray-300 rounded w-24 px-3 py-2 focus:outline-0"
               />
 
               <input
@@ -253,7 +253,7 @@ export default function Mydevice() {
                 placeholder="Mon(e.g. 09)"
                 value={searchMonth}
                 onChange={(e) => setSearchMonth(e.target.value)}
-                className="border border-gray-300 rounded w-28 px-4 py-1 focus:outline-0"
+                className="border border-gray-300 rounded w-28 px-3 py-2 focus:outline-0"
               />
 
               <input
@@ -261,7 +261,7 @@ export default function Mydevice() {
                 placeholder="Year (e.g. 2025)"
                 value={searchYear}
                 onChange={(e) => setSearchYear(e.target.value)}
-                className="border border-gray-300 rounded w-28 px-4 py-1 focus:outline-0"
+                className="border border-gray-300 rounded w-28 px-3 py-2 focus:outline-0"
               />
             </div>
 
