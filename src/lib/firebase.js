@@ -14,14 +14,26 @@ import {
 } from "firebase/firestore";
 
 // Your web app's Firebase configuration
+// for my own 
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDmp1nJo_qeQXbfxcD1CNx9qNoK9AnqPRI",
+//   authDomain: "schoolreg-a7ca6.firebaseapp.com",
+//   projectId: "schoolreg-a7ca6",
+//   storageBucket: "schoolreg-a7ca6.firebasestorage.app",
+//   messagingSenderId: "683307695591",
+//   appId: "1:683307695591:web:1511bc2ca3421fbdb8d142",
+//   measurementId: "G-G8B81BK6JM"
+// };
+
+// for the school 
 const firebaseConfig = {
-  apiKey: "AIzaSyDmp1nJo_qeQXbfxcD1CNx9qNoK9AnqPRI",
-  authDomain: "schoolreg-a7ca6.firebaseapp.com",
-  projectId: "schoolreg-a7ca6",
-  storageBucket: "schoolreg-a7ca6.firebasestorage.app",
-  messagingSenderId: "683307695591",
-  appId: "1:683307695591:web:1511bc2ca3421fbdb8d142",
-  measurementId: "G-G8B81BK6JM"
+  apiKey: "AIzaSyAKkkU-X6IFPsVzEykHiuE7Blgqekqg_9A",
+  authDomain: "dureg-d0f0f.firebaseapp.com",
+  projectId: "dureg-d0f0f",
+  storageBucket: "dureg-d0f0f.firebasestorage.app",
+  messagingSenderId: "1076223918571",
+  appId: "1:1076223918571:web:64d8383174e9c8779719ae",
+  measurementId: "G-ZTJPNQDVYJ"
 };
 
 // Initialize Firebase
